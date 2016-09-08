@@ -11,16 +11,27 @@
 </head>
 <body>
     <div class="container" ng-controller="OreshekNewsController as newsCtrl">
-        <form name="chooseSectionForm" ng-submit="newsCtrl.chooseSection(newsCtrl.currentSection)">
+        <form name="chooseSectionForm" ng-submit="chooseSection(currentSection)">
             <fieldset class="form-group">
-                <select ng-model="newsCtrl.currentSection" class="form-control" ng-options="news for news in [5, 4, 3, 2, 1]" title="Stars" required>
-                    <option value="">Rate the product</option>
+                <select ng-model="currentSection" class="form-control" ng-options="news for news in [sections[0], sections[1], sections[2], sections[3],
+                                                                                                              sections[4], sections[sections.length - 1]]" title="Stars" required>
+                    <option value="">Choose news section</option>
                 </select>
             </fieldset>
             <fieldset>
                 <input type="submit" class="btn btn-primary" value="Submit decision" />
             </fieldset>
         </form>
+        <div>
+            <ul ng-repeat="section in allSections">
+                <li><a href="#">{{section}}</a></li>
+            </ul>
+        </div>
+        <div>
+            <ul ng-repeat="article in articles">
+                <li><a href="{{article.web_url}}">{{article.headline.main}}</a></li>
+            </ul>
+        </div>
     </div>
 </body>
 </html>
