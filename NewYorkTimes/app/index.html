@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html ng-app="oreshekNews">
+<head>
+    <title>Oreshek News</title>
+    <!--Third-party Libraries-->
+    <link href="libraries/bootstrap-theme.css" rel="stylesheet" />
+    <link href="libraries/bootstrap.css" rel="stylesheet" />
+    <script src="libraries/angular.min.js"></script>
+    <!--Application scripts-->
+    <script src="js/app.js"></script>
+</head>
+<body>
+    <div class="container" ng-controller="OreshekNewsController as newsCtrl">
+        <form name="chooseSectionForm" ng-submit="newsCtrl.chooseSection(newsCtrl.currentSection)">
+            <fieldset class="form-group">
+                <select ng-model="newsCtrl.currentSection" class="form-control" ng-options="news for news in [5, 4, 3, 2, 1]" title="Stars" required>
+                    <option value="">Rate the product</option>
+                </select>
+            </fieldset>
+            <fieldset>
+                <input type="submit" class="btn btn-primary" value="Submit decision" />
+            </fieldset>
+        </form>
+    </div>
+</body>
+</html>

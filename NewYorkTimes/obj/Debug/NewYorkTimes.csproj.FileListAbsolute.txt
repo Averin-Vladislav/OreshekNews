@@ -1,0 +1,6 @@
+C:\Users\Uladzislau_Averyn\documents\visual studio 2013\Projects\NewYorkTimes\NewYorkTimes\bin\NewYorkTimes.dll.config
+C:\Users\Uladzislau_Averyn\documents\visual studio 2013\Projects\NewYorkTimes\NewYorkTimes\bin\NewYorkTimes.dll
+C:\Users\Uladzislau_Averyn\documents\visual studio 2013\Projects\NewYorkTimes\NewYorkTimes\bin\NewYorkTimes.pdb
+C:\Users\Uladzislau_Averyn\documents\visual studio 2013\Projects\NewYorkTimes\NewYorkTimes\obj\Debug\NewYorkTimes.csprojResolveAssemblyReference.cache
+C:\Users\Uladzislau_Averyn\documents\visual studio 2013\Projects\NewYorkTimes\NewYorkTimes\obj\Debug\NewYorkTimes.dll
+C:\Users\Uladzislau_Averyn\documents\visual studio 2013\Projects\NewYorkTimes\NewYorkTimes\obj\Debug\NewYorkTimes.pdb
