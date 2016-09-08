@@ -45,6 +45,11 @@
                 .then(function (response) {
                     console.log(response.data.response.docs);
                     $scope.articles = response.data.response.docs;
+                    $scope.articles.forEach(function (current, index) {
+                        if (current.multimedia.length) {
+                            current.gallery = ('http://www.nytimes.com/' + current.multimedia[0].url);
+                        }
+                    });
                 });
             }
         };

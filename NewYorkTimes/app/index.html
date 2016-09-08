@@ -6,11 +6,15 @@
     <link href="libraries/bootstrap-theme.css" rel="stylesheet" />
     <link href="libraries/bootstrap.css" rel="stylesheet" />
     <script src="libraries/angular.min.js"></script>
+    <script src="libraries/jquery-3.1.0.min.js"></script>
     <!--Application scripts-->
     <script src="js/app.js"></script>
 </head>
 <body>
-    <div class="container" ng-controller="OreshekNewsController as newsCtrl">
+    <div class="jumbotron text-xs-center">
+        <h1>Oreshek News</h1>
+    </div>
+    <div class="container album text-muted" ng-controller="OreshekNewsController as newsCtrl">
         <form name="chooseSectionForm" ng-submit="chooseSection(currentSection)">
             <fieldset class="form-group">
                 <select ng-model="currentSection" class="form-control" ng-options="news for news in [sections[0], sections[1], sections[2], sections[3],
@@ -27,10 +31,14 @@
                 <li><a href="#">{{section}}</a></li>
             </ul>
         </div>
-        <div>
-            <ul ng-repeat="article in articles">
-                <li><a href="{{article.web_url}}">{{article.headline.main}}</a></li>
-            </ul>
+        <div class="album text-muted">
+            <div ng-repeat="article in articles" class="row">
+                <div class="card">
+                    <img src="{{article.gallery}}" />
+                    <h3 class="card-text">{{article.headline.main}}</h3>
+                    <a href="{{article.web_url}}">More on NY Times...</a>
+                </div>
+            </div>
         </div>
     </div>
 </body>
