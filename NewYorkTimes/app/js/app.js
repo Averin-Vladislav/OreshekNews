@@ -1,6 +1,9 @@
 (function () {
     var app = angular.module('oreshekNews', []).controller('OreshekNewsController', ['$scope', '$http', function ($scope, $http) {
         var apiKey = "e0990f52eb2943e4a08c5feb52064044";
+        $scope.hideCurrentSection = true;
+        $scope.hideSectionsList = true;
+        $scope.hideImage = false;
 
         $scope.sections = ['Adventure Sports', 'Arts & Leisure', 'Arts', 'Automobiles',
                     'Blogs', 'Books', 'Booming', 'Business Day', 'Business',
@@ -30,11 +33,17 @@
                     'Your Money',
                     'Show all sections...'];
 
+        $scope.sectionsList = $scope.sections.slice(0, $scope.sections.length - 1);
+
+
         $scope.chooseSection = function (currentSection) {
             if (currentSection === 'Show all sections...') {
-                $scope.allSections = $scope.sections;
+                $scope.hideCurrentSection = true;
+                $scope.hideSectionsList = false;
             }
             else {
+                $scope.hideCurrentSection = false;
+                $scope.hideSectionsList = true;
                 var url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
                 url += '?' + $.param({
                     'api-key': apiKey,
@@ -48,10 +57,21 @@
                     $scope.articles.forEach(function (current, index) {
                         if (current.multimedia.length) {
                             current.gallery = ('http://www.nytimes.com/' + current.multimedia[0].url);
+                            $scope.hideImage = false;
                         }
+                        else {
+                            $scope.hideImage = true;
+                            //current.gallery = 'resources/no_image.png';
+                        }
+                        current.pub_date = current.pub_date.slice(0, 10);
                     });
                 });
             }
+        };
+
+        $scope.hideAll = function () {
+            $scope.hideCurrentSection = true;
+            $scope.hideSectionsList = true;
         };
     }]);
 }());

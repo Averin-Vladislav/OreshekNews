@@ -57,12 +57,15 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\css\reset.css" />
+    <Content Include="app\css\style.css" />
     <Content Include="app\js\app.js" />
     <Content Include="app\libraries\angular.min.js" />
     <Content Include="app\libraries\bootstrap-theme.css" />
     <Content Include="app\libraries\bootstrap.css" />
     <Content Include="app\index.html" />
     <Content Include="app\libraries\jquery-3.1.0.min.js" />
+    <Content Include="app\resources\no_image.png" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +79,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
