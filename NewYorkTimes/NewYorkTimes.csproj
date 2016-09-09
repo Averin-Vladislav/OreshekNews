@@ -65,6 +65,7 @@
     <Content Include="app\libraries\bootstrap.css" />
     <Content Include="app\index.html" />
     <Content Include="app\libraries\jquery-3.1.0.min.js" />
+    <Content Include="app\resources\logo.png" />
     <Content Include="app\resources\no_image.png" />
     <Content Include="Web.config" />
   </ItemGroup>
