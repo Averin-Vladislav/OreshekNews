@@ -1,4 +1,4 @@
-# Averin Vladislav
+# OreshekNews
 Handy news-service to keep track last trands and events of a world
 
 ![logo](http://storage3.static.itmages.ru/i/16/0909/h_1473431086_8270064_28ec693ddb.png "logo")
