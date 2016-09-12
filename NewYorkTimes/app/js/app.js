@@ -1,6 +1,6 @@
 (function () {
-    var app = angular.module('oreshekNews', []).controller('OreshekNewsController', ['$scope', '$http', function ($scope, $http) {
-        var apiKey = "e0990f52eb2943e4a08c5feb52064044";
+    let app = angular.module('oreshekNews', []).controller('OreshekNewsController', ['$scope', '$http', ($scope, $http) => {
+        const apiKey = 'e0990f52eb2943e4a08c5feb52064044';
         $scope.hideCurrentSection = true;
         $scope.hideSectionsList = true;
         $scope.hideImage = false;
@@ -36,7 +36,8 @@
         $scope.sectionsList = $scope.sections.slice(0, $scope.sections.length - 1);
 
 
-        $scope.chooseSection = function (currentSection) {
+        $scope.chooseSection = (currentSection = 'Show all sections...') => {
+
             if (currentSection === 'Show all sections...') {
                 $scope.hideCurrentSection = true;
                 $scope.hideSectionsList = false;
@@ -44,10 +45,10 @@
             else {
                 $scope.hideCurrentSection = false;
                 $scope.hideSectionsList = true;
-                var url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
+                let url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
                 url += '?' + $.param({
                     'api-key': apiKey,
-                    'fq': "news_desk:(\"" + currentSection + "\")"
+                    'fq': `news_desk:("${currentSection}")`
                 });
 
                 $http.get(url)
@@ -69,7 +70,7 @@
             }
         };
 
-        $scope.hideAll = function () {
+        $scope.hideAll = () => {
             $scope.hideCurrentSection = true;
             $scope.hideSectionsList = true;
         };

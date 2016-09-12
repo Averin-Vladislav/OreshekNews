@@ -1,0 +1,26 @@
+{
+    "name": "oreshek_news",
+    "version": "1.0.0",
+    "description": "News Portal using NY Times API",
+    "main": "index.js",
+    "scripts": {
+        "build" : "babel js -d js/dist --presets es2015",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Averin-Vladislav/OreshekNews.git"
+  },
+  "author": "Averin Vladislav",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Averin-Vladislav/OreshekNews/issues"
+  },
+  "homepage": "https://github.com/Averin-Vladislav/OreshekNews#readme",
+  "devDependencies": {
+    "babel-cli": "^6.14.0",
+    "babel-core": "^6.14.0",
+    "babel-preset-es2015": "^6.14.0",
+    "gulp-babel": "^6.1.2"
+  }
+}

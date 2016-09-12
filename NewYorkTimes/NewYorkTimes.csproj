@@ -60,6 +60,7 @@
     <Content Include="app\css\reset.css" />
     <Content Include="app\css\style.css" />
     <Content Include="app\js\app.js" />
+    <Content Include="app\js\gulpfile.js" />
     <Content Include="app\libraries\angular.min.js" />
     <Content Include="app\libraries\bootstrap-theme.css" />
     <Content Include="app\libraries\bootstrap.css" />
@@ -73,6 +74,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\package.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

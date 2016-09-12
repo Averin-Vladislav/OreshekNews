@@ -21,6 +21,10 @@
     color: white;
 }
 
+.logo {
+    cursor: pointer;
+}
+
 .heading_ref {
     cursor: pointer;
     color: black;
