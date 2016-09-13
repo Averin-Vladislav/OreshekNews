@@ -21,7 +21,7 @@ For using [Gulp](http://gulpjs.com/) you ought to install these packages:
 
 For installing use command `$ npm install --save-dev [package-name]` in command prompt.   
 
-So now you can use gulp tasks such as:
+So now you can use gulp tasks such as by print `$ gulp [task-name]` command in command line:
   * babel - for translate your code into earler standarts of EcmaScript
   * scripts - for minifying and concatination your js-code
   * styles - for minifying and concatination your css-styles
