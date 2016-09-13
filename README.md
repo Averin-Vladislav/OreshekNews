@@ -19,7 +19,7 @@ For using [Gulp](http://gulpjs.com/) you ought to install these packages:
   * [gulp-autoprefixer](https://www.npmjs.com/package/gulp-autoprefixer)  
   * [gulp-uglifycss](https://www.npmjs.com/package/gulp-uglifycss)    
 
-For installing gulp use command `$ npm install --save-dev gulp-install` in command prompt.
+For installing [Gulp](http://gulpjs.com/) use command `$ npm install --save-dev gulp-install` in command prompt.
 For installing packages use command `$ npm install --save-dev [package-name]` in command prompt.   
 
 So now you can use gulp tasks by printing `$ gulp [task-name]` command in command line:
