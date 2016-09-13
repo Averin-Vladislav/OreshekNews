@@ -17,8 +17,10 @@ For using [Gulp](http://gulpjs.com/) you ought to install these packages:
   * [gulp-concat](https://www.npmjs.com/package/gulp-concat)  
   * [gulp-uglifyjs](https://www.npmjs.com/package/gulp-uglifyjs)  
   * [gulp-autoprefixer](https://www.npmjs.com/package/gulp-autoprefixer)  
-  * [gulp-uglifycss](https://www.npmjs.com/package/gulp-uglifycss)  
-For installing use command `$ npm install --save-dev [package-name]` in command prompt.
+  * [gulp-uglifycss](https://www.npmjs.com/package/gulp-uglifycss)    
+
+For installing use command `$ npm install --save-dev [package-name]` in command prompt.   
+
 So now you can use gulp tasks such as:
   * babel - for translate your code into earler standarts of EcmaScript
   * scripts - for minifying and concatination your js-code
