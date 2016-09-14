@@ -1,12 +1,12 @@
 <p align="center">
-  <h3 align="center">OreshekNews</h3>
+  <h1 align="center">OreshekNews</h1>
   <p align="center">
     <img align="center" src="http://storage3.static.itmages.ru/i/16/0909/h_1473431086_8270064_28ec693ddb.png">
   </p>
-  <p align="center">Handy news-service to keep track last trends and events of a world</p>
+  <h3 align="center">Handy news-service to keep track last trends and events of a world</h3>
 </p>
 
-[![npm](https://img.shields.io/npm/v/npm.svg?maxAge=2592000)]()
+[![npm](https://img.shields.io/npm/v/npm.svg?maxAge=2592000)]()[![Package Control](https://img.shields.io/packagecontrol/dm/Package%20Control.svg?maxAge=2592000)]()
 
 ##To deploy project and run application you must do following steps:  
  1. Download repository to your local machine  
