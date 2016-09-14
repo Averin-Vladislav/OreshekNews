@@ -1,7 +1,10 @@
-# OreshekNews
-Handy news-service to keep track last trends and events of a world
+<p align="center">
+  <h3>OreshekNews</h3>
+  <img height="257" width="114" src="http://storage3.static.itmages.ru/i/16/0909/h_1473431086_8270064_28ec693ddb.png">
+  <p align="center">Handy news-service to keep track last trends and events of a world</p>
+</p>
 
-![logo](http://storage3.static.itmages.ru/i/16/0909/h_1473431086_8270064_28ec693ddb.png "logo")
+[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coveralls Status][coveralls-image]][coveralls-url] [![OpenCollective Backers][backer-badge]][backer-url] [![OpenCollective Sponsors][sponsor-badge]][sponsor-url] [![Gitter chat][gitter-image]][gitter-url]
 
 To deploy project and run application you must do following steps:  
  1. Download repository to your local machine  
