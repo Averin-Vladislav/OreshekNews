@@ -6,7 +6,7 @@
   <h3 align="center">Handy news-service to keep track last trends and events of a world</h3>
 </p>
 
-[![NPM version](https://img.shields.io/npm/v/npm.svg?maxAge=2592000)]() 
+[![NPM version](https://img.shields.io/npm/v/npm.svg?maxAge=2592000)]() [![](https://img.shields.io/badge/contacts-facebook-lightgrey.svg)]()
 
 ##To deploy project and run application you must do following steps:  
  1. Download repository to your local machine  
