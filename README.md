@@ -4,9 +4,10 @@
     <img align="center" src="http://storage3.static.itmages.ru/i/16/0909/h_1473431086_8270064_28ec693ddb.png">
   </p>
   <h3 align="center">Handy news-service to keep track last trends and events of a world</h3>
-</p>
+</p>  
 
- [![NPM version](https://img.shields.io/npm/v/npm.svg?maxAge=2592000)]() [![](https://img.shields.io/badge/contacts-facebook-lightgrey.svg)](https://www.facebook.com/vladik.averin) [![](https://img.shields.io/badge/build%20with-Gulp-yellow.svg)](http://gulpjs.com/) [![](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)]()
+ [![](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)]()
+ [![NPM version](https://img.shields.io/npm/v/npm.svg?maxAge=2592000)]() [![](https://img.shields.io/badge/contacts-facebook-lightgrey.svg)](https://www.facebook.com/vladik.averin) [![](https://img.shields.io/badge/build%20with-Gulp-yellow.svg)](http://gulpjs.com/)
  [![](https://img.shields.io/badge/Angular-1.5.8-red.svg)](https://angularjs.org/)
 
 ##To deploy project and run application you must do following steps:  
