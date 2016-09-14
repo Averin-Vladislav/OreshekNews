@@ -16,7 +16,8 @@
  5. In 'app' folder run command-prompt and install 'node-modules' use `$ npm install` command
  6. Run server (`Ctrl + F5` in MSVS)
 
-##For using [Gulp](http://gulpjs.com/) you ought to install these packages:  
+##Using [Gulp](http://gulpjs.com/)  
+For using [Gulp](http://gulpjs.com/) you ought to install these packages:  
   * [gulp-babel](https://www.npmjs.com/package/gulp-babel)  
   * [gulp-sass](https://www.npmjs.com/package/gulp-sass)  
   * [gulp-concat](https://www.npmjs.com/package/gulp-concat)  
@@ -27,7 +28,8 @@
 For installing [Gulp](http://gulpjs.com/) use command `$ npm install --save-dev gulp-install` in command prompt.
 For installing packages use command `$ npm install --save-dev [package-name]` in command prompt.   
 
-##So now you can use gulp tasks by printing `$ gulp [task-name]` command in command line:
+##So now you can use gulp tasks 
+Just print `$gulp` to build whole project or `$ gulp [task-name]` to run particular task:
   * **babel** - for translate your code into earler standarts of EcmaScript
   * **scripts** - for minifying and concatination your js-code
   * **styles** - for minifying and concatination your css-styles
