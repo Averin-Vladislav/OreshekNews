@@ -1,6 +1,6 @@
 <p align="center">
-  <h3>OreshekNews</h3>
-  <img height="257" width="114" src="http://storage3.static.itmages.ru/i/16/0909/h_1473431086_8270064_28ec693ddb.png">
+  <h3 align="center">OreshekNews</h3>
+  <img align="center" src="http://storage3.static.itmages.ru/i/16/0909/h_1473431086_8270064_28ec693ddb.png">
   <p align="center">Handy news-service to keep track last trends and events of a world</p>
 </p>
 
