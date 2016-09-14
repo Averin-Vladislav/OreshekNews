@@ -7,7 +7,7 @@ To deploy project and run application you must do following steps:
  1. Download repository to your local machine  
  2. Create web-app project on MSVS or use other server-based framework to create server side  
  3. Extract downloaded files to 'app' folder in your [project-name] folder (for MSVS users)  
- 4. [Install node.js](https://nodejs.org/en/)  
+ 4. [Install node.js](https://nodejs.org/en/) globally  
  5. In 'app' folder run command-prompt and install 'node-modules' use `$ npm install` command
  6. Run server (`Ctrl + F5` in MSVS)
 
