@@ -38,7 +38,10 @@
 
         $scope.chooseSection = (currentSection = 'Show all sections...') => {
 
-            if (currentSection === 'Show all sections...') {
+            $('.loading_spinner').show();
+
+        if (currentSection === 'Show all sections...') {
+            $('.loading_spinner').hide();
                 $scope.hideCurrentSection = true;
                 $scope.hideSectionsList = false;
             }
@@ -53,7 +56,7 @@
 
                 $http.get(url)
                 .then(function (response) {
-                    console.log(response.data.response.docs);
+                    $('.loading_spinner').hide();
                     $scope.articles = response.data.response.docs;
                     $scope.articles.forEach(function (current, index) {
                         if (current.multimedia.length) {

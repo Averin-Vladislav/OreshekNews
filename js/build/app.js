@@ -15,7 +15,10 @@
             var currentSection = arguments.length <= 0 || arguments[0] === undefined ? 'Show all sections...' : arguments[0];
 
 
+            $('.loading_spinner').show();
+
             if (currentSection === 'Show all sections...') {
+                $('.loading_spinner').hide();
                 $scope.hideCurrentSection = true;
                 $scope.hideSectionsList = false;
             } else {
@@ -28,7 +31,7 @@
                 });
 
                 $http.get(url).then(function (response) {
-                    console.log(response.data.response.docs);
+                    $('.loading_spinner').hide();
                     $scope.articles = response.data.response.docs;
                     $scope.articles.forEach(function (current, index) {
                         if (current.multimedia.length) {

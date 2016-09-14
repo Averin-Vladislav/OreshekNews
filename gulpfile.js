@@ -33,9 +33,9 @@ gulp.task('styles', () => {
 });
 
 gulp.task('sass', () => {
-    return gulp.src('sass/style.scss')
+    return gulp.src(['sass/*.scss'])
+        .pipe(concat('build.scss'))
         .pipe(sass())
-        .pipe(gulp.src('css/style.css'))
         .pipe(autoprefixer({
             browsers: ['last 2 versions']
         }))
@@ -49,3 +49,5 @@ gulp.task('watch', () => {
     gulp.watch('libraries/*.js', ['scripts']);
     gulp.watch('libraries/*css', ['styles']);
 });
+
+gulp.task('default', ['babel', 'scripts', 'styles', 'sass']);
