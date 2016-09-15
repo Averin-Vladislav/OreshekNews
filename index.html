@@ -9,12 +9,12 @@
     <!--Application scripts-->
     <script src="js/build/app.js"></script>
 </head>
-<body>
-    <div class="wrapper" ng-controller="OreshekNewsController as newsCtrl">
+<body ng-controller="OreshekNewsController as newsCtrl">
+    <div class="wrapper">
         <div class="content">
             <div class="jumbotron text-center">
                 <div ng-click="hideAll()" class="logo">
-                    <img src="resources/logo.png" alt="logo" />
+                    <img src="resources/min/logo.png" alt="logo" />
                     <h1 class="heading_ref">Oreshek News</h1>
                 </div>
                 <p>Handy news-service to keep track last trends and events of a world</p>
@@ -64,10 +64,10 @@
             </div>
         </div>
     </div>
-    <!--<div class="loading_spinner" style="display:none">
-        <img src="resources/ajax-loader.gif" class="ajax-loader" />
-    </div>-->
-    <div class="loading_spinner" style="display:none">
+    <div class="loading_spinner" ng-show="showSpinnerGIF">
+        <img src="resources/min/ajax-loader.gif" class="ajax-loader" />
+    </div>
+    <div class="loading_spinner" ng-show="showSpinnerCSS">
         <div class="sk-cube-grid">
             <div class="sk-cube sk-cube1"></div>
             <div class="sk-cube sk-cube2"></div>
@@ -80,5 +80,5 @@
             <div class="sk-cube sk-cube9"></div>
         </div>
     </div>
-</body>
+</bodyng-controller="OreshekNewsController>
 </html>

@@ -1,9 +1,26 @@
 (function () {
+    function isOldIE() 
+    {
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE ");
+
+        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))  // If Internet Explorer
+        {
+            if(parseInt(ua.substring(msie + 5, ua.indexOf(".", msie))) <= 9) {
+                return true;
+            } 
+        }
+
+        return false;
+    }
+
     let app = angular.module('oreshekNews', []).controller('OreshekNewsController', ['$scope', '$http', ($scope, $http) => {
         const apiKey = 'e0990f52eb2943e4a08c5feb52064044';
         $scope.hideCurrentSection = true;
         $scope.hideSectionsList = true;
         $scope.hideImage = false;
+        $scope.showSpinnerGIF = false;
+        $scope.showSpinnerCSS = false;
 
         $scope.sections = ['Adventure Sports', 'Arts & Leisure', 'Arts', 'Automobiles',
                     'Blogs', 'Books', 'Booming', 'Business Day', 'Business',
@@ -35,13 +52,22 @@
 
         $scope.sectionsList = $scope.sections.slice(0, $scope.sections.length - 1);
 
-
         $scope.chooseSection = (currentSection = 'Show all sections...') => {
+        
+            if(isOldIE()) {
+                $scope.showSpinnerGIF = true;
+            }
+            else {
+                $scope.showSpinnerCSS = true;
+            }
 
-            $('.loading_spinner').show();
-
-        if (currentSection === 'Show all sections...') {
-            $('.loading_spinner').hide();
+            if (currentSection === 'Show all sections...') {
+                if(isOldIE()) {
+                    $scope.showSpinnerGIF = false;
+                }
+                else {
+                    $scope.showSpinnerCSS = false;
+                }
                 $scope.hideCurrentSection = true;
                 $scope.hideSectionsList = false;
             }
@@ -56,7 +82,14 @@
 
                 $http.get(url)
                 .then(function (response) {
-                    $('.loading_spinner').hide();
+            
+                    if(isOldIE()) {
+                        $scope.showSpinnerGIF = false;
+                    }
+                    else {
+                        $scope.showSpinnerCSS = false;
+                    }
+
                     $scope.articles = response.data.response.docs;
                     $scope.articles.forEach(function (current, index) {
                         if (current.multimedia.length) {
@@ -65,10 +98,17 @@
                         }
                         else {
                             $scope.hideImage = true;
-                            //current.gallery = 'resources/no_image.png';
+                            //current.gallery = 'resources/min/no_image.png';
                         }
                         current.pub_date = current.pub_date.slice(0, 10);
                     });
+
+                    if(isOldIE()) {
+                        $scope.showSpinnerGIF = false;
+                    }
+                    else {
+                        $scope.showSpinnerCSS = false;
+                    }
                 });
             }
         };

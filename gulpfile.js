@@ -4,7 +4,9 @@
       concat       = require('gulp-concat'),
       uglifyjs     = require('gulp-uglifyjs'),
       autoprefixer = require('gulp-autoprefixer'),
-      uglifycss    = require('gulp-uglifycss');
+      uglifycss    = require('gulp-uglifycss'),
+      imagemin     = require('gulp-imagemin'),
+      pngquant     = require('imagemin-pngquant')
 
  
 gulp.task('babel', () => {
@@ -43,11 +45,23 @@ gulp.task('sass', () => {
         .pipe(gulp.dest('css/build'));
 });
 
+gulp.task('img', function() {
+  return gulp.src('resources/*')
+        .pipe(imagemin({
+          interlaced: true,
+          pogressive: true,
+          svgoPlugins: [{removeViewBox: false}],
+          une: [pngquant()]
+        }))
+        .pipe(gulp.dest('resources/min'));
+});
+
 gulp.task('watch', () => {
-    gulp.watch('sass/style.scss', ['sass']);
+    gulp.watch('sass/*.scss', ['sass']);
     gulp.watch('js/app.js', ['babel']);
     gulp.watch('libraries/*.js', ['scripts']);
     gulp.watch('libraries/*css', ['styles']);
+    gulp.watch('resources/*', ['img']);
 });
 
-gulp.task('default', ['babel', 'scripts', 'styles', 'sass']);
+gulp.task('default', ['babel', 'scripts', 'styles', 'sass', 'img']);
