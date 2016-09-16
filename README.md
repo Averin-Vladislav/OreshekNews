@@ -12,7 +12,7 @@
 
 ##To deploy project and run application you must do following steps:  
  1. Download repository to your local machine  
- 2. Create web-app project on MSVS or use other server-based framework to create server side  
+ 2. Create web-app project on MSVS or use other server-based framework to create server side (i.e. you can use [gulp-webserver](https://www.npmjs.com/package/gulp-webserver))
  3. Extract downloaded files to 'app' folder in your [project-name] folder (for MSVS users)  
  4. [Install node.js](https://nodejs.org/en/) globally  
  5. In 'app' folder run command-prompt and install 'node-modules' use `$ npm install` command
@@ -25,17 +25,20 @@ For using [Gulp](http://gulpjs.com/) you ought to install these packages:
   * [gulp-concat](https://www.npmjs.com/package/gulp-concat)  
   * [gulp-uglifyjs](https://www.npmjs.com/package/gulp-uglifyjs)  
   * [gulp-autoprefixer](https://www.npmjs.com/package/gulp-autoprefixer)  
-  * [gulp-uglifycss](https://www.npmjs.com/package/gulp-uglifycss)    
+  * [gulp-uglifycss](https://www.npmjs.com/package/gulp-uglifycss) 
+  * [gulp-webserver](https://www.npmjs.com/package/gulp-webserver)   
 
 For installing [Gulp](http://gulpjs.com/) use command `$ npm install --save-dev gulp-install` in command prompt.  
 For installing packages use command `$ npm install --save-dev [package-name]` in command prompt.   
 
 ##So now you can use gulp tasks 
 Just print `$ gulp` to build whole project or `$ gulp [task-name]` to run particular task:
+  * **start** - for running local webser  
   * **babel** - for translate your code into earler standarts of EcmaScript
   * **scripts** - for minifying and concatination your js-code
   * **styles** - for minifying and concatination your css-styles
   * **sass** - for compile your .sass files to .css
+  * **clean** - for cache cleaning (cache is used as buffer for image storing)
   * **watch** - for upload any changes in your code
 
 

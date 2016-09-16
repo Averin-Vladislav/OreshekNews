@@ -6,8 +6,18 @@
       autoprefixer = require('gulp-autoprefixer'),
       uglifycss    = require('gulp-uglifycss'),
       imagemin     = require('gulp-imagemin'),
-      pngquant     = require('imagemin-pngquant')
+      pngquant     = require('imagemin-pngquant'),
+      cache        = require('gulp-cache'),
+      webserver    = require('gulp-webserver');
 
+gulp.task('start', () => {
+    gulp.src('./')
+        .pipe(webserver({
+            livereload: true,
+            directoryListning: true,
+            open: true
+        }));
+});
  
 gulp.task('babel', () => {
     return gulp.src('js/app.js')
@@ -39,21 +49,25 @@ gulp.task('sass', () => {
         .pipe(concat('build.scss'))
         .pipe(sass())
         .pipe(autoprefixer({
-            browsers: ['last 2 versions']
+            browsers: ['last 2 versions', '> 1%', 'ie 9']
         }))
         .pipe(uglifycss())
         .pipe(gulp.dest('css/build'));
 });
 
-gulp.task('img', function() {
+gulp.task('img', () => {
   return gulp.src('resources/*')
-        .pipe(imagemin({
+        .pipe(cache(imagemin({
           interlaced: true,
           pogressive: true,
           svgoPlugins: [{removeViewBox: false}],
           une: [pngquant()]
-        }))
+        })))
         .pipe(gulp.dest('resources/min'));
+});
+
+gulp.task('clean', () => {
+    return cache.clearAll;
 });
 
 gulp.task('watch', () => {
