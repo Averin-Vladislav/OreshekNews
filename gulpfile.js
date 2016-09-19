@@ -28,8 +28,7 @@ gulp.task('babel', () => {
 });
 
 gulp.task('scripts', () => {
-    return gulp.src(['libraries/angular.min.js',
-                     'libraries/jquery-3.1.0.min.js'])
+    return gulp.src('libraries/*.js')
             .pipe(concat('libs.min.js'))
             .pipe(uglifyjs())
             .pipe(gulp.dest('libraries/build'));
@@ -38,7 +37,8 @@ gulp.task('scripts', () => {
 gulp.task('styles', () => {
     return gulp.src(['libraries/reset/css',
                      'libraries/bootstrap-theme.css',
-                     'libraries/bootstrap.css',])
+                     'libraries/bootstrap.css',
+        ])
         .pipe(concat('libs.min.css'))
         .pipe(uglifycss())
         .pipe(gulp.dest('libraries/build'));

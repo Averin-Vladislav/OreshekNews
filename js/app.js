@@ -15,6 +15,20 @@
     }
 
     let app = angular.module('oreshekNews', []).controller('OreshekNewsController', ['$scope', '$http', ($scope, $http) => {
+        if (!device.tablet() && !device.mobile()) {
+		   $(".player").mb_YTPlayer({
+            videoURL:'https://www.youtube.com/watch?v=-ILqHSH4X_w',
+            containment:'header',
+            autoPlay:true,
+            mute:true,
+            startAt:10,
+            opacity:1,
+            showControls : false
+            });
+	    } else {
+		    //Если мобильние девайсы
+	    };
+
         const apiKey = 'e0990f52eb2943e4a08c5feb52064044';
         $scope.hideCurrentSection = true;
         $scope.hideSectionsList = true;

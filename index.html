@@ -3,56 +3,62 @@
 <head>
     <title>Oreshek News</title>
     <!--Third-party Libraries-->
+    <link href="css/fonts.css" rel="stylesheet" />
     <link href="libraries/build/libs.min.css" rel="stylesheet" />
     <link href="css/build/build.css" rel="stylesheet" />
-    <script src="libraries/build/libs.min.js"></script>
+    <script src="libraries/build/libs.min.js"></script>  
     <!--Application scripts-->
     <script src="js/build/app.js"></script>
 </head>
-<body ng-controller="OreshekNewsController as newsCtrl">
+<body ng-controller="OreshekNewsController as newsCtrl"> 
     <div class="wrapper">
         <div class="content">
-            <div class="jumbotron text-center">
-                <div ng-click="hideAll()" class="logo">
-                    <img src="resources/min/logo.png" alt="logo" />
-                    <h1 class="heading_ref">Oreshek News</h1>
-                </div>
-                <p>Handy news-service to keep track last trends and events of a world</p>
-            </div>
-            <div class="page_body container">
-                <form name="chooseSectionForm" ng-submit="chooseSection(currentSection)" class="form-inline text-center">
-                    <fieldset class="form-group">
-                        <select ng-model="currentSection" class="form-control" ng-options="news for news in [sections[0], sections[1], sections[2], sections[3],
-                                                                                                             sections[4], sections[sections.length - 1]]" title="Stars" required>
-                            <option value="">Choose news section</option>
-                        </select>
-                    </fieldset>
-                    <input type="submit" class="btn btn-primary" value="Submit" />
-                </form>
-                <div ng-hide="hideSectionsList">
-                    <div class="list-group" ng-repeat="section in sectionsList">
-                        <a href="#" class="list-group-item" ng-click="chooseSection(section)">{{section}}</a>
+            <header>
+                <div class="player"></div>            
+            </header>
+            <div class="header">
+                    <div ng-click="hideAll()" class="logo">
+                        <img src="resources/min/logo.png" alt="logo" />
+                        <h1 class="heading_ref">Oreshek News</h1>
                     </div>
-                    <a href="#top" class="topLink list-group-item">Back to top</a>
-                </div>
-                <div class="row" ng-hide="hideCurrentSection">
-                    <div class="col-sm-6" ng-repeat="article in articles">
-                        <div class="left_column">
-                            <div class="image_container">
-                                <img ng-hide="hideImage" src="{{article.gallery}}" />
-                            </div>
-                            <div class="date">
-                                <span>{{article.pub_date}}</span>
-                            </div>
+                    <p>Handy news-service to keep track last trends and events of a world</p>
+            </div>
+            <div class="main_section">
+                <div class="page_body container">
+                    <form name="chooseSectionForm" ng-submit="chooseSection(currentSection)" class="form-inline text-center">
+                        <fieldset class="form-group">
+                            <select ng-model="currentSection" class="form-control" ng-options="news for news in [sections[0], sections[1], sections[2], sections[3],
+                                                                                                                sections[4], sections[sections.length - 1]]" title="Stars" required>
+                                <option value="">Choose news section</option>
+                            </select>
+                        </fieldset>
+                        <input type="submit" class="btn btn-primary" value="Submit" />
+                    </form>
+                    <div ng-hide="hideSectionsList">
+                        <div class="list-group" ng-repeat="section in sectionsList">
+                            <a href="#" class="list-group-item" ng-click="chooseSection(section)">{{section}}</a>
                         </div>
-                        <div class="right_column">
-                            <h3 class="article_headline">{{article.headline.main}}</h3>
-                            <p>{{article.lead_paragraph}}</p>
-                            <div>
-                                <a href="{{article.web_url}}" target="_blank">More...</a>
+                        <a href="#top" class="topLink list-group-item">Back to top</a>
+                    </div>
+                    <div class="row" ng-hide="hideCurrentSection">
+                        <div class="col-sm-6" ng-repeat="article in articles">
+                            <div class="left_column">
+                                <div class="image_container">
+                                    <img ng-hide="hideImage" src="{{article.gallery}}" />
+                                </div>
+                                <div class="date">
+                                    <span>{{article.pub_date}}</span>
+                                </div>
                             </div>
+                            <div class="right_column">
+                                <h3 class="article_headline">{{article.headline.main}}</h3>
+                                <p>{{article.lead_paragraph}}</p>
+                                <div>
+                                    <a class="more_link" href="{{article.web_url}}" target="_blank">More...</a>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
                         </div>
-                        <div class="clear"></div>
                     </div>
                 </div>
             </div>
