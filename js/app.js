@@ -35,7 +35,7 @@ app.controller('OreshekNewsController', ['$scope', '$http', 'requestService', ($
         spinnerCSS: true
     };
 
-    $.getJSON('../resources/sections.json', function(data) {
+    $.getJSON('../resources/data/sections.json', function(data) {
         $scope.sections = data.sections;
         $scope.sectionsList = $scope.sections.slice(0, $scope.sections.length - 1);
     }) 

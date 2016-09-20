@@ -59,7 +59,9 @@ gulp.task('sass', () => {
 });
 
 gulp.task('img', () => {
-  return gulp.src('resources/*')
+  return gulp.src(['resources/graphic/*.png',
+                   'resources/graphic/*.gif',
+                   'resources/graphic/*.jpg'])
         .pipe(cache(imagemin({
           interlaced: true,
           pogressive: true,
