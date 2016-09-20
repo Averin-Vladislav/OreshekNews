@@ -1,0 +1,20 @@
+<div class="row" ng-hide="hide.currentSection">
+    <div class="col-sm-6" ng-repeat="article in articles">
+        <div class="left_column">
+            <div class="image_container">
+                <img ng-hide="hide.image" src="{{article.gallery}}" />
+            </div>
+            <div class="date">
+                <span>{{article.pub_date}}</span>
+            </div>
+        </div>
+        <div class="right_column">
+            <h3 class="article_headline">{{article.headline.main}}</h3>
+            <p>{{article.lead_paragraph}}</p>
+            <div>
+                <a class="more_link" href="{{article.web_url}}" target="_blank">More...</a>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>

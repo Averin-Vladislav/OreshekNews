@@ -8,7 +8,7 @@
     <link href="css/build/build.css" rel="stylesheet" />
     <script src="libraries/build/libs.min.js"></script>  
     <!--Application scripts-->
-    <script src="js/build/app.js"></script>
+    <script src="js/build/bundle.js"></script>
 </head>
 <body ng-controller="OreshekNewsController as newsCtrl"> 
     <div class="wrapper">
@@ -17,49 +17,17 @@
                 <div class="player"></div>            
             </header>
             <div class="header">
-                    <div ng-click="hideAll()" class="logo">
-                        <img src="resources/min/logo.png" alt="logo" />
-                        <h1 class="heading_ref">Oreshek News</h1>
+                    <div class="logo">
+                        <img src="resources/min/logo.png" ng-click="hideAll()" alt="logo" />
+                        <h1 class="heading_ref" ng-click="hideAll()">Oreshek News</h1>
                     </div>
                     <p>Handy news-service to keep track last trends and events of a world</p>
             </div>
             <div class="main_section">
                 <div class="page_body container">
-                    <form name="chooseSectionForm" ng-submit="chooseSection(currentSection)" class="form-inline text-center">
-                        <fieldset class="form-group">
-                            <select ng-model="currentSection" class="form-control" ng-options="news for news in [sections[0], sections[1], sections[2], sections[3],
-                                                                                                                sections[4], sections[sections.length - 1]]" title="Stars" required>
-                                <option value="">Choose news section</option>
-                            </select>
-                        </fieldset>
-                        <input type="submit" class="btn btn-primary" value="Submit" />
-                    </form>
-                    <div ng-hide="hideSectionsList">
-                        <div class="list-group" ng-repeat="section in sectionsList">
-                            <a href="#" class="list-group-item" ng-click="chooseSection(section)">{{section}}</a>
-                        </div>
-                        <a href="#top" class="topLink list-group-item">Back to top</a>
-                    </div>
-                    <div class="row" ng-hide="hideCurrentSection">
-                        <div class="col-sm-6" ng-repeat="article in articles">
-                            <div class="left_column">
-                                <div class="image_container">
-                                    <img ng-hide="hideImage" src="{{article.gallery}}" />
-                                </div>
-                                <div class="date">
-                                    <span>{{article.pub_date}}</span>
-                                </div>
-                            </div>
-                            <div class="right_column">
-                                <h3 class="article_headline">{{article.headline.main}}</h3>
-                                <p>{{article.lead_paragraph}}</p>
-                                <div>
-                                    <a class="more_link" href="{{article.web_url}}" target="_blank">More...</a>
-                                </div>
-                            </div>
-                            <div class="clear"></div>
-                        </div>
-                    </div>
+                    <select-form></select-form>
+                    <section-list></section-list>
+                    <news></news>
                 </div>
             </div>
         </div>
@@ -70,21 +38,6 @@
             </div>
         </div>
     </div>
-    <div class="loading_spinner" ng-show="showSpinnerGIF">
-        <img src="resources/min/ajax-loader.gif" class="ajax-loader" />
-    </div>
-    <div class="loading_spinner" ng-show="showSpinnerCSS">
-        <div class="sk-cube-grid">
-            <div class="sk-cube sk-cube1"></div>
-            <div class="sk-cube sk-cube2"></div>
-            <div class="sk-cube sk-cube3"></div>
-            <div class="sk-cube sk-cube4"></div>
-            <div class="sk-cube sk-cube5"></div>
-            <div class="sk-cube sk-cube6"></div>
-            <div class="sk-cube sk-cube7"></div>
-            <div class="sk-cube sk-cube8"></div>
-            <div class="sk-cube sk-cube9"></div>
-        </div>
-    </div>
+    <spinner></spinner>
 </body>
 </html>

@@ -1,135 +1,109 @@
-(function () {
-    function isOldIE() 
-    {
-        var ua = window.navigator.userAgent;
-        var msie = ua.indexOf("MSIE ");
+function isIE() 
+{
+    if (/MSIE 10/i.test(navigator.userAgent) || 
+        /MSIE 9/i.test(navigator.userAgent) || 
+        /rv:11.0/i.test(navigator.userAgent) ||
+        /Edge\/\d./i.test(navigator.userAgent)) {
+        return true;
+    }     
+    return false;
+}
 
-        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))  // If Internet Explorer
-        {
-            if(parseInt(ua.substring(msie + 5, ua.indexOf(".", msie))) <= 9) {
-                return true;
-            } 
+let app = angular.module('oreshekNews', []);
+
+app.controller('OreshekNewsController', ['$scope', '$http', 'requestService', ($scope, $http, requestService) => {
+    if (!device.tablet() && !device.mobile() && !isIE()) {
+        $(".player").mb_YTPlayer({
+        videoURL:'https://www.youtube.com/watch?v=-ILqHSH4X_w',
+        containment:'header',
+        autoPlay:true,
+        mute:true,
+        startAt:10,
+        opacity:1,
+        showControls : false
+        });
+    } else {
+        $("body").addClass("background");
+    };
+
+    const apiKey = 'e0990f52eb2943e4a08c5feb52064044';
+    $scope.hide = {
+        currentSection: true,
+        sectionsList: true,
+        image: false,
+        spinnerGIF: true,
+        spinnerCSS: true
+    };
+
+    $.getJSON('../resources/sections.json', function(data) {
+        $scope.sections = data.sections;
+        $scope.sectionsList = $scope.sections.slice(0, $scope.sections.length - 1);
+    }) 
+
+    $scope.chooseSection = (currentSection = 'Show all sections...') => {
+        if(isIE()) {
+            $scope.hide.spinnerGIF = false;
+        }
+        else {
+            $scope.hide.spinnerCSS = false;
         }
 
-        return false;
-    }
-
-    let app = angular.module('oreshekNews', []).controller('OreshekNewsController', ['$scope', '$http', ($scope, $http) => {
-        if (!device.tablet() && !device.mobile()) {
-		   $(".player").mb_YTPlayer({
-            videoURL:'https://www.youtube.com/watch?v=-ILqHSH4X_w',
-            containment:'header',
-            autoPlay:true,
-            mute:true,
-            startAt:10,
-            opacity:1,
-            showControls : false
-            });
-	    } else {
-		    //Если мобильние девайсы
-	    };
-
-        const apiKey = 'e0990f52eb2943e4a08c5feb52064044';
-        $scope.hideCurrentSection = true;
-        $scope.hideSectionsList = true;
-        $scope.hideImage = false;
-        $scope.showSpinnerGIF = false;
-        $scope.showSpinnerCSS = false;
-
-        $scope.sections = ['Adventure Sports', 'Arts & Leisure', 'Arts', 'Automobiles',
-                    'Blogs', 'Books', 'Booming', 'Business Day', 'Business',
-                    'Cars', 'Circuits', 'Classifieds', 'Connecticut', 'Crosswords & Games', 'Culture',
-                    'DealBook', 'Dining',
-                    'Editorial', 'Education', 'Energy', 'Entrepreneurs', 'Environment', 'Escapes',
-                    'Fashion & Style', 'Fashion', 'Favorites', 'Financial', 'Flight', 'Food', 'Foreign',
-                    'Generations', 'Giving', 'Global Home',
-                    'Health & Fitness', 'Health', 'Home & Garden', 'Home',
-                    'Jobs',
-                    'Key',
-                    'Letters', 'Long Island',
-                    'Magazine', 'Market Place', 'Media', 'Men\'s Health', 'Metro', 'Metropolitan', 'Movies', 'Museums',
-                    'National', 'Nesting',
-                    'Obits', 'Obituaries', 'Obituary', 'OpEd', 'Opinion', 'Outlook',
-                    'Personal Investing', 'Personal Tech', 'Play', 'Politics',
-                    'Regionals', 'Retail', 'Retirement',
-                    'Science', 'Small Business', 'Society', 'Sports', 'Style', 'Sunday Business', 'Sunday Review', 'Sunday Styles',
-                    'T Magazine', 'T Style', 'Technology', 'Teens', 'Television', 'The Arts', 'The Business of Green',
-                    'The City Desk', 'The City', 'The Marathon', 'The Millennium', 'The Natural World',
-                    'The Upshot', 'The Weekend', 'The Year in Pictures',
-                    'Theater', 'Then & Now', 'Thursday Styles', 'Times Topics', 'Travel',
-                    'U.S.', 'Universal', 'Upshot', 'UrbanEye',
-                    'Vacation',
-                    'Washington', 'Wealth', 'Weather', 'Week in Review', 'Week', 'Weekend',
-                    'Westchester', 'Wireless Living', 'Women\'s Health', 'Working', 'Workplace', 'World',
-                    'Your Money',
-                    'Show all sections...'];
-
-        $scope.sectionsList = $scope.sections.slice(0, $scope.sections.length - 1);
-
-        $scope.chooseSection = (currentSection = 'Show all sections...') => {
-        
-            if(isOldIE()) {
-                $scope.showSpinnerGIF = true;
+        if (currentSection === 'Show all sections...') {
+            if(isIE()) {
+                $scope.hide.spinnerGIF = true;
             }
             else {
-                $scope.showSpinnerCSS = true;
+                $scope.hide.spinnerCSS = true;
             }
+            $scope.hide.currentSection = true;
+            $scope.hide.sectionsList = false;
+        }
+        else {
+            $scope.hide.currentSection = false;
+            $scope.hide.sectionsList = true;
+            let url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
+            url += '?' + $.param({
+                'api-key': apiKey,
+                'fq': `news_desk:("${currentSection}")`
+            });
 
-            if (currentSection === 'Show all sections...') {
-                if(isOldIE()) {
-                    $scope.showSpinnerGIF = false;
+            let promise = requestService.makeRequest(url);
+            promise.then(function (response) {
+                if(isIE()) {
+                    $scope.hide.spinnerGIF = true;
                 }
                 else {
-                    $scope.showSpinnerCSS = false;
+                    $scope.hide.spinnerCSS = true;
                 }
-                $scope.hideCurrentSection = true;
-                $scope.hideSectionsList = false;
-            }
-            else {
-                $scope.hideCurrentSection = false;
-                $scope.hideSectionsList = true;
-                let url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
-                url += '?' + $.param({
-                    'api-key': apiKey,
-                    'fq': `news_desk:("${currentSection}")`
-                });
 
-                $http.get(url)
-                .then(function (response) {
-            
-                    if(isOldIE()) {
-                        $scope.showSpinnerGIF = false;
+                $scope.articles = response.data.response.docs;
+                $scope.articles.forEach(function (current, index) {
+                    if (current.multimedia.length) {
+                        current.gallery = ('http://www.nytimes.com/' + current.multimedia[0].url);
+                        $scope.hide.image = false;
                     }
                     else {
-                        $scope.showSpinnerCSS = false;
+                        $scope.hide.image = true;
+                        //current.gallery = 'resources/min/no_image.png';
                     }
-
-                    $scope.articles = response.data.response.docs;
-                    $scope.articles.forEach(function (current, index) {
-                        if (current.multimedia.length) {
-                            current.gallery = ('http://www.nytimes.com/' + current.multimedia[0].url);
-                            $scope.hideImage = false;
-                        }
-                        else {
-                            $scope.hideImage = true;
-                            //current.gallery = 'resources/min/no_image.png';
-                        }
-                        current.pub_date = current.pub_date.slice(0, 10);
-                    });
-
-                    if(isOldIE()) {
-                        $scope.showSpinnerGIF = false;
-                    }
-                    else {
-                        $scope.showSpinnerCSS = false;
-                    }
+                    current.pub_date = current.pub_date.slice(0, 10);
                 });
-            }
-        };
 
-        $scope.hideAll = () => {
-            $scope.hideCurrentSection = true;
-            $scope.hideSectionsList = true;
-        };
-    }]);
-}());
+                if(isIE()) {
+                    $scope.hide.spinnerGIF = true;
+                }
+                else {
+                    $scope.hide.spinnerCSS = true;
+                }
+            });
+        }
+    };
+
+    $scope.hideAll = () => {
+        $scope.hide.currentSection = true;
+        $scope.hide.sectionsList = true;
+    };
+}]);
+
+    
+
