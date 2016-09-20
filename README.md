@@ -12,7 +12,7 @@
 
 ##To deploy project and run application you must do following steps:  
  1. Download repository to your local machine  
- 2. Create web-app project on MSVS or use other server-based framework to create server side (i.e. you can use [gulp-webserver](https://www.npmjs.com/package/gulp-webserver)). Also you can simply launch `index.html` file in a browser.
+ 2. Create web-app project on MSVS or use other server-based framework to create server side (i.e. you can use [gulp-webserver](https://www.npmjs.com/package/gulp-webserver)).
  3. Extract downloaded files to 'app' folder in your [project-name] folder (for MSVS users)  
  4. [Install node.js](https://nodejs.org/en/) globally  
  5. In 'app' folder run command-prompt and install 'node-modules' use `$ npm install` command
