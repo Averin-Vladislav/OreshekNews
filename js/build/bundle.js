@@ -41,6 +41,8 @@ app.controller('OreshekNewsController', ['$scope', '$http', 'requestService', fu
     $scope.chooseSection = function () {
         var currentSection = arguments.length <= 0 || arguments[0] === undefined ? 'Show all sections...' : arguments[0];
 
+        $("select_button").blur();
+
         if (isIE()) {
             $scope.hide.spinnerGIF = false;
         } else {

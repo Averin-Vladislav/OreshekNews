@@ -41,6 +41,8 @@ app.controller('OreshekNewsController', ['$scope', '$http', 'requestService', ($
     }) 
 
     $scope.chooseSection = (currentSection = 'Show all sections...') => {
+        $("select_button").blur();
+
         if(isIE()) {
             $scope.hide.spinnerGIF = false;
         }
