@@ -4,11 +4,12 @@
             <a class="more_link" href="{{article.web_url}}" target="_blank">details</a>
         </div>
         <div class="left_column">
-            <div class="image_container">
-                <img ng-hide="hide.image" src="{{article.gallery}}" />
+            <div class="image_container" ng-hide="article.hideImage">
+                <img src="{{article.gallery}}" />
             </div>
-            <div class="date">
-                <span>{{article.pub_date}}</span>
+            <div class="publish_info">
+                <span>{{article.date}}</span>
+                <span>{{article.author}}</span>
             </div>
         </div>
         <div class="right_column">
