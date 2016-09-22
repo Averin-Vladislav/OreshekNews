@@ -77,7 +77,7 @@ gulp.task('clean', () => {
 
 gulp.task('watch', () => {
     gulp.watch('sass/*.scss', ['sass']);
-    gulp.watch('js/app.js', ['babel']);
+    gulp.watch('js/**/*.js', ['babel']);
     gulp.watch('libraries/*.js', ['scripts']);
     gulp.watch('libraries/*css', ['styles']);
     gulp.watch('resources/*', ['img']);

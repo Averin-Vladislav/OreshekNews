@@ -9,8 +9,7 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', 'request
         spinnerCSS: true
     };
 
-    function isIE() 
-    {
+    $scope.isIE = () => {
         if (/MSIE 10/i.test(navigator.userAgent) || 
             /MSIE 9/i.test(navigator.userAgent) || 
             /rv:11.0/i.test(navigator.userAgent) ||
@@ -20,8 +19,8 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', 'request
         return false;
     };
 
-    function hideSpinner(hide) {
-        if(isIE()) {
+    let hideSpinner = (hide) => { // isolate to controller
+        if($scope.isIE()) {
             $scope.hide.spinnerGIF = hide;
         }
         else {
@@ -34,21 +33,7 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', 'request
         hideSpinner(true);
     }, 5000);
 
-    if (!device.tablet() && !device.mobile() && !isIE()) {
-        $(".player").mb_YTPlayer({
-        videoURL:'https://www.youtube.com/watch?v=-ILqHSH4X_w',
-        containment:'header',
-        autoPlay:true,
-        mute:true,
-        startAt:10,
-        opacity:1,
-        showControls : false
-        });
-    } else {
-        $("body").addClass("background");
-    };
-
-    $.getJSON('../resources/data/sections.json', function(data) {
+    $.getJSON('../resources/data/sections.json', function(data) { // make service
         $scope.sections = data.sections;
         $scope.sectionsList = $scope.sections.slice(0, $scope.sections.length - 1);
     }) 
