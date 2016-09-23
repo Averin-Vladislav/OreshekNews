@@ -2,8 +2,32 @@
 
 var app = angular.module('oreshekNews', []);
 
-app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', 'requestService', function ($scope, $http, $timeout, requestService) {
-    var apiKey = 'e0990f52eb2943e4a08c5feb52064044';
+app.controller('MainController', ['$scope', function ($scope) {
+    $scope.show = {
+        mainPage: true,
+        adminPage: false,
+        button: true
+    };
+
+    $scope.nextPage = 'Admin page';
+    $scope.currentPage = 'Main page';
+
+    $scope.switchPage = function (currentPage) {
+        if (currentPage === 'Main page') {
+            $scope.show.mainPage = false;
+            $scope.show.adminPage = true;
+            $scope.nextPage = 'back to Main page';
+            $scope.currentPage = 'Admin page';
+        } else {
+            $scope.show.mainPage = true;
+            $scope.show.adminPage = false;
+            $scope.nextPage = 'Admin page';
+            $scope.currentPage = 'Main page';
+        }
+    };
+}]);
+
+app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', 'requestService', 'constService', 'getJSONService', function ($scope, $http, $timeout, requestService, constService, getJSONService) {
     $scope.hide = {
         currentSection: true,
         sectionsList: true,
@@ -19,7 +43,6 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', 'request
     };
 
     var hideSpinner = function hideSpinner(hide) {
-        // isolate to controller
         if ($scope.isIE()) {
             $scope.hide.spinnerGIF = hide;
         } else {
@@ -32,8 +55,7 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', 'request
         hideSpinner(true);
     }, 5000);
 
-    $.getJSON('../resources/data/sections.json', function (data) {
-        // make service
+    getJSONService.getInfo(constService.dataPath, function (data) {
         $scope.sections = data.sections;
         $scope.sectionsList = $scope.sections.slice(0, $scope.sections.length - 1);
     });
@@ -51,19 +73,18 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', 'request
         } else {
             $scope.hide.currentSection = false;
             $scope.hide.sectionsList = true;
-            var url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
-            url += '?' + $.param({
-                'api-key': apiKey,
+            constService.articlesUrl += '?' + $.param({
+                'api-key': constService.apiKey,
                 'fq': 'news_desk:("' + currentSection + '")'
             });
 
-            var promise = requestService.makeRequest(url);
+            var promise = requestService.makeRequest(constService.articlesUrl);
             promise.then(function (response) {
                 hideSpinner(true);
                 $scope.articles = response.data.response.docs;
                 $scope.articles.forEach(function (current, index) {
                     if (current.multimedia.length) {
-                        current.gallery = 'http://www.nytimes.com/' + current.multimedia[0].url;
+                        current.gallery = '' + constService.commonUrl + current.multimedia[0].url;
                         current.hideImage = false;
                     } else {
                         current.hideImage = true;
@@ -84,16 +105,51 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', 'request
     };
 }]);
 
-app.service('requestService', ['$http', function ($http) {
-    var reqService = {};
+app.controller('AdministrativeController', ['$scope', function ($scope) {
+    //pending implementation
+}]);
 
-    reqService.makeRequest = function (url) {
+app.service('constService', function () {
+    var constants = {
+        apiKey: 'e0990f52eb2943e4a08c5feb52064044',
+        articlesUrl: 'https://api.nytimes.com/svc/search/v2/articlesearch.json',
+        commonUrl: 'http://www.nytimes.com/',
+        dataPath: '../resources/data/sections.json'
+    };
+
+    return constants;
+});
+app.service('getJSONService', function () {
+    var getJSONService = {};
+
+    getJSONService.getInfo = function (path, callback) {
+        $.getJSON(path, callback);
+    };
+
+    return getJSONService;
+});
+app.service('requestService', ['$http', function ($http) {
+    var requestService = {};
+
+    requestService.makeRequest = function (url) {
         return $http.get(url);
     };
 
-    return reqService;
+    return requestService;
 }]);
 
+app.directive('adminPage', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '../../directives/adminPage.html'
+    };
+});
+app.directive('mainPage', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '../../directives/mainPage.html'
+    };
+});
 app.directive('news', function () {
     return {
         restrict: 'E',
@@ -130,14 +186,12 @@ app.directive('sectionList', function () {
 });
 app.directive('selectForm', function () {
     return {
-        require: '^OreshekNewsController',
         restrict: 'E',
         templateUrl: '../../directives/selectForm.html'
     };
 });
 app.directive('spinner', function () {
     return {
-        require: ['$timeout', '^OreshekNewsController'],
         restrict: 'E',
         templateUrl: '../../directives/spinner.html'
     };

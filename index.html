@@ -11,35 +11,12 @@
     <!--Application scripts-->
     <script src="js/build/bundle.js"></script>
 </head>
-<body ng-controller="OreshekNewsController as newsCtrl"> 
-    <div class="wrapper">
-        <div class="content">
-            <!--<header>
-                <div class="player"></div>            
-            </header>-->
-            <player></player>
-            <div class="header">
-                    <div class="logo">
-                        <!--<img src="resources/min/logo.png" ng-click="hideAll()" alt="logo" />-->
-                        <h1 class="heading_ref" ng-click="hideAll()">Oreshek News</h1>
-                    </div>
-                    <p>Handy news-service to keep track last trends and events of a world</p>
-            </div>
-            <div class="main_section">
-                <div class="page_body container">
-                    <select-form></select-form>
-                    <section-list></section-list>
-                    <news></news>
-                </div>
-            </div>
-        </div>
-        <div class="footer">
-            <div class="copyright">
-                <p class="name">by Averin Vladislav&copy;</p>
-                <a href="https://www.facebook.com/vladik.averin" target="_blank">Contact me</a>
-            </div>
-        </div>
+<body ng-controller="MainController as mainCtrl"> 
+    <div class="main_page" ng-controller="OreshekNewsController as newsCtrl">
+        <main-page></main-page>
     </div>
-    <spinner></spinner>
+    <div ng-show="show.adminPage" class="admin_page" ng-controller="AdministrativeController as adminCtrl">
+        <admin-page></admin-page>
+    </div>
 </body>
 </html>

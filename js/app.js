@@ -1,7 +1,38 @@
 let app = angular.module('oreshekNews', []);
 
-app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', 'requestService', ($scope, $http, $timeout, requestService) => {
-    const apiKey = 'e0990f52eb2943e4a08c5feb52064044';
+app.controller('MainController', ['$scope', function($scope) {
+    $scope.show = {
+        mainPage: true,
+        adminPage: false,
+        button: true
+    };
+
+    $scope.nextPage = 'Admin page';
+    $scope.currentPage = 'Main page';
+
+    $scope.switchPage = (currentPage) => {
+        if(currentPage === 'Main page') {
+            $scope.show.mainPage = false;
+            $scope.show.adminPage = true;
+            $scope.nextPage = 'back to Main page';
+            $scope.currentPage = 'Admin page';
+        }
+        else {
+            $scope.show.mainPage = true;
+            $scope.show.adminPage = false;
+            $scope.nextPage = 'Admin page';
+            $scope.currentPage = 'Main page';
+        }
+    };
+}]);
+
+app.controller('OreshekNewsController', ['$scope', 
+                                         '$http', 
+                                         '$timeout', 
+                                         'requestService', 
+                                         'constService', 
+                                         'getJSONService',
+                                         ($scope, $http, $timeout, requestService, constService, getJSONService) => {
     $scope.hide = {
         currentSection: true,
         sectionsList: true,
@@ -19,7 +50,7 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', 'request
         return false;
     };
 
-    let hideSpinner = (hide) => { // isolate to controller
+    let hideSpinner = (hide) => { 
         if($scope.isIE()) {
             $scope.hide.spinnerGIF = hide;
         }
@@ -33,10 +64,10 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', 'request
         hideSpinner(true);
     }, 5000);
 
-    $.getJSON('../resources/data/sections.json', function(data) { // make service
+    getJSONService.getInfo(constService.dataPath, (data) => {
         $scope.sections = data.sections;
         $scope.sectionsList = $scope.sections.slice(0, $scope.sections.length - 1);
-    }) 
+    });
 
     $scope.chooseSection = (currentSection = 'Show all sections...') => {
         $(".select_button").blur();
@@ -50,19 +81,18 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', 'request
         else {
             $scope.hide.currentSection = false;
             $scope.hide.sectionsList = true;
-            let url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
-            url += '?' + $.param({
-                'api-key': apiKey,
+            constService.articlesUrl += '?' + $.param({
+                'api-key': constService.apiKey,
                 'fq': `news_desk:("${currentSection}")`
             });
 
-            let promise = requestService.makeRequest(url);
+            let promise = requestService.makeRequest(constService.articlesUrl);
             promise.then(function (response) {
                 hideSpinner(true);
                 $scope.articles = response.data.response.docs;
                 $scope.articles.forEach(function (current, index) {
                     if (current.multimedia.length) {
-                        current.gallery = (`http://www.nytimes.com/${current.multimedia[0].url}`);
+                        current.gallery = (`${constService.commonUrl}${current.multimedia[0].url}`);                      
                         current.hideImage = false;
                     }
                     else {
@@ -83,6 +113,11 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', 'request
         $(".logo").removeClass("logo_top");
     };
 }]);
+
+app.controller('AdministrativeController', ['$scope', function($scope) {
+    //pending implementation
+}]);
+
 
     
 

@@ -1,7 +1,13 @@
 ﻿$link_hover: #2DE0E0;
+$link: #B3B3B3;
 
 html, body {
     height: 100%;
+}
+
+.main_page {
+    height: 100%;
+    display: block;
 }
 
 header {
@@ -58,7 +64,7 @@ header {
 }
 
 .logo_top {
-    padding-top: 0;
+    padding-top: 10px;
 }
 
 .heading_ref {
@@ -199,11 +205,17 @@ header {
 
 .copyright {
     text-align: center;
-    a {
+    a, .switch_page_ref {
+        display: inline-block;
+        color: $link;
         &:hover {
             color: $link_hover;
             text-decoration: none; 
+            cursor: pointer;
         }
+    }
+    a {
+        margin-right: 10px;
     }
     .name {
         margin: 5px 0 0 0;

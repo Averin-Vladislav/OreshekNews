@@ -1,0 +1,26 @@
+<div class="wrapper">
+    <div ng-show="show.mainPage" class="content">
+        <player></player>
+        <div class="header">
+                <div class="logo">
+                    <h1 class="heading_ref" ng-click="hideAll()">Oreshek News</h1>
+                </div>
+                <p>Handy news-service to keep track last trends and events of a world</p>
+        </div>
+        <div class="main_section">
+            <div class="page_body container">
+                <select-form></select-form>
+                <section-list></section-list>
+                <news></news>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="copyright">
+            <p class="name">by Averin Vladislav&copy;</p>
+            <a href="https://www.facebook.com/vladik.averin" target="_blank">Contact me</a>
+            <div class="switch_page_ref" ng-click="switchPage(currentPage)">{{nextPage}}</div>
+        </div>
+    </div>
+</div>
+<spinner></spinner>

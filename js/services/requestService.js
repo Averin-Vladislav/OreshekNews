@@ -1,9 +1,9 @@
 app.service('requestService', ['$http', function($http) {
-    var reqService = {};
+    let requestService = {};
     
-    reqService.makeRequest = function(url) {
+    requestService.makeRequest = (url) => {
         return $http.get(url);
     }
 
-    return reqService;
+    return requestService;
 }]);
