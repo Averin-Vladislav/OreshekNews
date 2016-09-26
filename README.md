@@ -1,8 +1,5 @@
 <p align="center">
   <h1 align="center">OreshekNews</h1>
-  <p align="center">
-    <img align="center" src="http://storage3.static.itmages.ru/i/16/0909/h_1473431086_8270064_28ec693ddb.png">
-  </p>
   <h3 align="center">Handy news-service to keep track last trends and events of a world</h3>
 </p>  
 
