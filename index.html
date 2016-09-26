@@ -7,16 +7,12 @@
     <link href="css/fonts.css" rel="stylesheet" />
     <link href="libraries/build/libs.min.css" rel="stylesheet" />
     <link href="css/build/build.css" rel="stylesheet" />
+    <script src="https://code.angularjs.org/1.3.11/angular.js"></script>
+    <script src="https://code.angularjs.org/1.3.11/angular-route.js"></script>
     <script src="libraries/build/libs.min.js"></script>  
     <!--Application scripts-->
     <script src="js/build/bundle.js"></script>
 </head>
-<body ng-controller="MainController as mainCtrl"> 
-    <div class="main_page" ng-controller="OreshekNewsController as newsCtrl">
-        <main-page></main-page>
-    </div>
-    <div ng-show="show.adminPage" class="admin_page" ng-controller="AdministrativeController as adminCtrl">
-        <admin-page></admin-page>
-    </div>
+<body ng-view ng-controller="MainController as mainCtrl"> 
 </body>
 </html>

@@ -1,38 +1,32 @@
-let app = angular.module('oreshekNews', []);
+let app = angular.module('oreshekNews', ['ngRoute']);
 
-app.controller('MainController', ['$scope', function($scope) {
-    $scope.show = {
-        mainPage: true,
-        adminPage: false,
-        button: true
-    };
-
+app.controller('MainController', ['$scope', '$location', ($scope, $location) => {
     $scope.nextPage = 'Admin page';
     $scope.currentPage = 'Main page';
 
     $scope.switchPage = (currentPage) => {
         if(currentPage === 'Main page') {
-            $scope.show.mainPage = false;
-            $scope.show.adminPage = true;
             $scope.nextPage = 'back to Main page';
             $scope.currentPage = 'Admin page';
+            $location.path('admin');
         }
         else {
-            $scope.show.mainPage = true;
-            $scope.show.adminPage = false;
             $scope.nextPage = 'Admin page';
             $scope.currentPage = 'Main page';
+            $location.path('');
         }
     };
 }]);
 
 app.controller('OreshekNewsController', ['$scope', 
                                          '$http', 
-                                         '$timeout', 
+                                         '$timeout',
+                                         '$location', 
                                          'requestService', 
                                          'constService', 
                                          'getJSONService',
-                                         ($scope, $http, $timeout, requestService, constService, getJSONService) => {
+                                         ($scope, $http, $timeout, $location, requestService, constService, getJSONService) => {
+
     $scope.hide = {
         currentSection: true,
         sectionsList: true,
@@ -77,16 +71,17 @@ app.controller('OreshekNewsController', ['$scope',
             hideSpinner(true);
             $scope.hide.currentSection = true;
             $scope.hide.sectionsList = false;
+            $(".logo").addClass("logo_top");
         }
         else {
             $scope.hide.currentSection = false;
             $scope.hide.sectionsList = true;
-            constService.articlesUrl += '?' + $.param({
+            let url = constService.articlesUrl + '?' + $.param({
                 'api-key': constService.apiKey,
                 'fq': `news_desk:("${currentSection}")`
             });
 
-            let promise = requestService.makeRequest(constService.articlesUrl);
+            let promise = requestService.makeRequest(url);
             promise.then(function (response) {
                 hideSpinner(true);
                 $scope.articles = response.data.response.docs;
@@ -106,6 +101,10 @@ app.controller('OreshekNewsController', ['$scope',
             });
         }
     };
+
+    $scope.toTop = () => {
+        $('html,body').scrollTop(0);
+    }
 
     $scope.hideAll = () => {
         $scope.hide.currentSection = true;

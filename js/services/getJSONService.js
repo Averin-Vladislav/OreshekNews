@@ -1,8 +1,8 @@
 app.service('getJSONService', function() {
     let getJSONService = {};
 
-    getJSONService.getInfo = (path, callback) => {
-        $.getJSON(path, callback);
+    getJSONService.getInfo = (pathToFile, callback) => {
+        $.getJSON(pathToFile, callback);
     }
 
     return getJSONService;

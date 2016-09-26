@@ -22,7 +22,8 @@ gulp.task('start', () => {
 gulp.task('babel', () => {
     return gulp.src(['js/app.js',
                      'js/services/*.js',
-                     'js/directives/*.js'])
+                     'js/directives/*.js',
+                     'js/appConfig.js'])
         .pipe(concat('bundle.js'))
         .pipe(babel({
             presets: ['es2015']

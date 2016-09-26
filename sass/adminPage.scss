@@ -1,4 +1,7 @@
-.admin_page {
+$link_hover: #2DE0E0;
+$link: #B3B3B3;
+
+.a_main {
     position: absolute;
     top: 50%;
     margin-top: -100px;
@@ -10,3 +13,32 @@
     text-align: center;
     line-height: 200px;
 }
+
+.a_footer {
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(#000, 0.5);
+    color: white;
+    .copyright {
+        text-align: center;
+        a, .switch_page_ref {
+            display: inline-block;
+            color: $link;
+            &:hover {
+                color: $link_hover;
+                text-decoration: none; 
+                cursor: pointer;
+            }
+        }
+        a {
+            margin-right: 10px;
+        }
+        .name {
+            margin: 5px 0 0 0;
+        }
+    }
+}
+

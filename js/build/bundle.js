@@ -1,33 +1,26 @@
 'use strict';
 
-var app = angular.module('oreshekNews', []);
+var app = angular.module('oreshekNews', ['ngRoute']);
 
-app.controller('MainController', ['$scope', function ($scope) {
-    $scope.show = {
-        mainPage: true,
-        adminPage: false,
-        button: true
-    };
-
+app.controller('MainController', ['$scope', '$location', function ($scope, $location) {
     $scope.nextPage = 'Admin page';
     $scope.currentPage = 'Main page';
 
     $scope.switchPage = function (currentPage) {
         if (currentPage === 'Main page') {
-            $scope.show.mainPage = false;
-            $scope.show.adminPage = true;
             $scope.nextPage = 'back to Main page';
             $scope.currentPage = 'Admin page';
+            $location.path('admin');
         } else {
-            $scope.show.mainPage = true;
-            $scope.show.adminPage = false;
             $scope.nextPage = 'Admin page';
             $scope.currentPage = 'Main page';
+            $location.path('');
         }
     };
 }]);
 
-app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', 'requestService', 'constService', 'getJSONService', function ($scope, $http, $timeout, requestService, constService, getJSONService) {
+app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$location', 'requestService', 'constService', 'getJSONService', function ($scope, $http, $timeout, $location, requestService, constService, getJSONService) {
+
     $scope.hide = {
         currentSection: true,
         sectionsList: true,
@@ -70,15 +63,16 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', 'request
             hideSpinner(true);
             $scope.hide.currentSection = true;
             $scope.hide.sectionsList = false;
+            $(".logo").addClass("logo_top");
         } else {
             $scope.hide.currentSection = false;
             $scope.hide.sectionsList = true;
-            constService.articlesUrl += '?' + $.param({
+            var url = constService.articlesUrl + '?' + $.param({
                 'api-key': constService.apiKey,
                 'fq': 'news_desk:("' + currentSection + '")'
             });
 
-            var promise = requestService.makeRequest(constService.articlesUrl);
+            var promise = requestService.makeRequest(url);
             promise.then(function (response) {
                 hideSpinner(true);
                 $scope.articles = response.data.response.docs;
@@ -96,6 +90,10 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', 'request
                 $(".logo").addClass("logo_top");
             });
         }
+    };
+
+    $scope.toTop = function () {
+        $('html,body').scrollTop(0);
     };
 
     $scope.hideAll = function () {
@@ -122,8 +120,8 @@ app.service('constService', function () {
 app.service('getJSONService', function () {
     var getJSONService = {};
 
-    getJSONService.getInfo = function (path, callback) {
-        $.getJSON(path, callback);
+    getJSONService.getInfo = function (pathToFile, callback) {
+        $.getJSON(pathToFile, callback);
     };
 
     return getJSONService;
@@ -138,18 +136,6 @@ app.service('requestService', ['$http', function ($http) {
     return requestService;
 }]);
 
-app.directive('adminPage', function () {
-    return {
-        restrict: 'E',
-        templateUrl: '../../directives/adminPage.html'
-    };
-});
-app.directive('mainPage', function () {
-    return {
-        restrict: 'E',
-        templateUrl: '../../directives/mainPage.html'
-    };
-});
 app.directive('news', function () {
     return {
         restrict: 'E',
@@ -195,4 +181,11 @@ app.directive('spinner', function () {
         restrict: 'E',
         templateUrl: '../../directives/spinner.html'
     };
+});
+app.config(function ($routeProvider) {
+    $routeProvider.when('/', {
+        templateUrl: '../../directives/mainPage.html'
+    }).when('/admin', {
+        templateUrl: '../../directives/adminPage.html'
+    }).otherwise({ redirectTo: '/' });
 });
