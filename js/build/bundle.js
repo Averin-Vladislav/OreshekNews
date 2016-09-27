@@ -139,14 +139,14 @@ app.service('requestService', ['$http', function ($http) {
 app.directive('news', function () {
     return {
         restrict: 'E',
-        templateUrl: '../../directives/news.html'
+        templateUrl: '../../directives/news/news.html'
     };
 });
 app.directive('player', function () {
     return {
         require: '^OreshekNewsController',
         restrict: 'E',
-        templateUrl: '../../directives/player.html',
+        templateUrl: '../../directives/player/player.html',
         controller: function controller($scope) {
             if (!device.tablet() && !device.mobile() && !$scope.isIE()) {
                 $(".player").mb_YTPlayer({
@@ -167,19 +167,19 @@ app.directive('player', function () {
 app.directive('sectionList', function () {
     return {
         restrict: 'E',
-        templateUrl: '../../directives/sectionList.html'
+        templateUrl: '../../directives/sectionList/sectionList.html'
     };
 });
 app.directive('selectForm', function () {
     return {
         restrict: 'E',
-        templateUrl: '../../directives/selectForm.html'
+        templateUrl: '../../directives/selectForm/selectForm.html'
     };
 });
 app.directive('spinner', function () {
     return {
         restrict: 'E',
-        templateUrl: '../../directives/spinner.html'
+        templateUrl: '../../directives/spinner/spinner.html'
     };
 });
 app.config(function ($routeProvider) {

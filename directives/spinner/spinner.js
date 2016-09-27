@@ -1,6 +1,6 @@
  app.directive('spinner', function() {
     return {
         restrict: 'E',
-        templateUrl: '../../directives/spinner.html',
+        templateUrl: '../../directives/spinner/spinner.html',
     };
 });

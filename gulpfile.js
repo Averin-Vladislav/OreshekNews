@@ -19,10 +19,22 @@ gulp.task('start', () => {
         }));
 });
  
-gulp.task('babel', () => {
+/*gulp.task('babel', () => {
     return gulp.src(['js/app.js',
                      'js/services/*.js',
                      'js/directives/*.js',
+                     'js/appConfig.js'])
+        .pipe(concat('bundle.js'))
+        .pipe(babel({
+            presets: ['es2015']
+        }))
+        .pipe(gulp.dest('js/build'));
+});*/
+
+gulp.task('babel', () => {
+    return gulp.src(['js/app.js',
+                     'js/services/*.js',
+                     'directives/**/*.js',
                      'js/appConfig.js'])
         .pipe(concat('bundle.js'))
         .pipe(babel({

@@ -2,7 +2,7 @@ app.directive('player', function() {
     return {
         require: '^OreshekNewsController',
         restrict: 'E',
-        templateUrl: '../../directives/player.html',
+        templateUrl: '../../directives/player/player.html',
         controller: function($scope) {
             if (!device.tablet() && !device.mobile() && !$scope.isIE()) {
                 $(".player").mb_YTPlayer({
