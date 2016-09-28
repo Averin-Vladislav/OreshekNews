@@ -8,7 +8,8 @@
       imagemin     = require('gulp-imagemin'),
       pngquant     = require('imagemin-pngquant'),
       cache        = require('gulp-cache'),
-      webserver    = require('gulp-webserver');
+      webserver    = require('gulp-webserver'),
+      refresh      = require('gulp-refresh');
 
 gulp.task('start', () => {
     gulp.src('./')
@@ -18,21 +19,10 @@ gulp.task('start', () => {
             open: true
         }));
 });
- 
-/*gulp.task('babel', () => {
-    return gulp.src(['js/app.js',
-                     'js/services/*.js',
-                     'js/directives/*.js',
-                     'js/appConfig.js'])
-        .pipe(concat('bundle.js'))
-        .pipe(babel({
-            presets: ['es2015']
-        }))
-        .pipe(gulp.dest('js/build'));
-});*/
 
 gulp.task('babel', () => {
     return gulp.src(['js/app.js',
+                     'js/controllers/*.js',
                      'js/services/*.js',
                      'directives/**/*.js',
                      'js/appConfig.js'])
@@ -61,14 +51,14 @@ gulp.task('styles', () => {
 });
 
 gulp.task('sass', () => {
-    return gulp.src(['sass/*.scss'])
+    return gulp.src(['styles/sass/*.scss'])
         .pipe(concat('build.scss'))
         .pipe(sass())
         .pipe(autoprefixer({
             browsers: ['last 2 versions', '> 1%', 'ie 9']
         }))
         .pipe(uglifycss())
-        .pipe(gulp.dest('css/build'));
+        .pipe(gulp.dest('styles/css/build'));
 });
 
 gulp.task('img', () => {
@@ -84,12 +74,17 @@ gulp.task('img', () => {
         .pipe(gulp.dest('resources/min'));
 });
 
+gulp.task('refresh', () => {
+    refresh();
+});
+
 gulp.task('clean', () => {
     return cache.clearAll;
 });
 
 gulp.task('watch', () => {
-    gulp.watch('sass/*.scss', ['sass']);
+    gulp.watch('styles/css/fonts.css', ['refresh']);
+    gulp.watch('styles/sass/*.scss', ['sass']);
     gulp.watch('js/**/*.js', ['babel']);
     gulp.watch('libraries/*.js', ['scripts']);
     gulp.watch('libraries/*css', ['styles']);

@@ -2,6 +2,9 @@
 
 var app = angular.module('oreshekNews', ['ngRoute']);
 
+app.controller('AdministrativeController', ['$scope', function ($scope) {
+    //pending implementation
+}]);
 app.controller('MainController', ['$scope', '$location', function ($scope, $location) {
     $scope.nextPage = 'Admin page';
     $scope.currentPage = 'Main page';
@@ -18,7 +21,6 @@ app.controller('MainController', ['$scope', '$location', function ($scope, $loca
         }
     };
 }]);
-
 app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$location', 'requestService', 'constService', 'getJSONService', function ($scope, $http, $timeout, $location, requestService, constService, getJSONService) {
 
     $scope.hide = {
@@ -102,11 +104,6 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$locati
         $(".logo").removeClass("logo_top");
     };
 }]);
-
-app.controller('AdministrativeController', ['$scope', function ($scope) {
-    //pending implementation
-}]);
-
 app.service('constService', function () {
     var constants = {
         apiKey: 'e0990f52eb2943e4a08c5feb52064044',
@@ -142,6 +139,12 @@ app.directive('news', function () {
         templateUrl: '../../directives/news/news.html'
     };
 });
+app.directive('sectionList', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '../../directives/sectionList/sectionList.html'
+    };
+});
 app.directive('player', function () {
     return {
         require: '^OreshekNewsController',
@@ -162,12 +165,6 @@ app.directive('player', function () {
                 $("body").addClass("background");
             };
         }
-    };
-});
-app.directive('sectionList', function () {
-    return {
-        restrict: 'E',
-        templateUrl: '../../directives/sectionList/sectionList.html'
     };
 });
 app.directive('selectForm', function () {
