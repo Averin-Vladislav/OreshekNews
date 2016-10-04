@@ -34,7 +34,9 @@ gulp.task('babel', () => {
 });
 
 gulp.task('scripts', () => {
-    return gulp.src('libraries/*.js')
+    return gulp.src(['libraries/angular.js',
+                     'libraries/angular-route.js',
+                     'libraries/*.js'])
             .pipe(concat('libs.min.js'))
             .pipe(uglifyjs())
             .pipe(gulp.dest('libraries/build'));

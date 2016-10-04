@@ -14,18 +14,18 @@ app.controller('OreshekNewsController', ['$scope',
         spinnerCSS: true
     };
 
-    $scope.isIE = () => {
-        if (/MSIE 10/i.test(navigator.userAgent) || 
-            /MSIE 9/i.test(navigator.userAgent) || 
-            /rv:11.0/i.test(navigator.userAgent) ||
-            /Edge\/\d./i.test(navigator.userAgent)) {
+    $scope.isIE = (browser = navigator.userAgent) => {
+        if (/MSIE 10/i.test(browser) || 
+            /MSIE 9/i.test(browser) || 
+            /rv:11.0/i.test(browser) ||
+            /Edge\/\d./i.test(browser)) {
             return true;
         }     
         return false;
     };
 
-    let hideSpinner = (hide) => { 
-        if($scope.isIE()) {
+    $scope.hideSpinner = (hide, browser = navigator.userAgent) => { 
+        if($scope.isIE(browser)) {
             $scope.hide.spinnerGIF = hide;
         }
         else {
@@ -33,10 +33,15 @@ app.controller('OreshekNewsController', ['$scope',
         }
     }
 
-    hideSpinner(false);
-    $timeout(function() {
-        hideSpinner(true);
-    }, 5000);
+    $scope.hideSpinner(false);
+
+    $scope.waitPageLoading = () => {
+        $timeout(function() {
+            $scope.hideSpinner(true);
+        }, 5000);
+    }
+
+    $scope.waitPageLoading();
 
     getJSONService.getInfo(constService.dataPath, (data) => {
         $scope.sections = data.sections;
@@ -45,10 +50,10 @@ app.controller('OreshekNewsController', ['$scope',
 
     $scope.chooseSection = (currentSection = 'Show all sections...') => {
         $(".select_button").blur();
-        hideSpinner(false);
+        $scope.hideSpinner(false);
 
         if (currentSection === 'Show all sections...') {
-            hideSpinner(true);
+            $scope.hideSpinner(true);
             $scope.hide.currentSection = true;
             $scope.hide.sectionsList = false;
             $(".logo").addClass("logo_top");
@@ -63,7 +68,7 @@ app.controller('OreshekNewsController', ['$scope',
 
             let promise = requestService.makeRequest(url);
             promise.then(function (response) {
-                hideSpinner(true);
+                $scope.hideSpinner(true);
                 $scope.articles = response.data.response.docs;
                 $scope.articles.forEach(function (current, index) {
                     if (current.multimedia.length) {
@@ -76,7 +81,7 @@ app.controller('OreshekNewsController', ['$scope',
                     current.date = `${current.pub_date.slice(0, 10)}`;
                     current.author = (current.byline && current.byline.original) ? `${current.byline.original}` : ``;
                 });
-                hideSpinner(true);
+                $scope.hideSpinner(true);
                 $(".logo").addClass("logo_top");
             });
         }
