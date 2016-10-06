@@ -1,11 +1,16 @@
-app.controller('OreshekNewsController', ['$scope', 
+app.controller('OreshekNewsController', ['$scope', '$compile', 
+                                         '$rootScope',
                                          '$http', 
                                          '$timeout',
                                          '$location', 
                                          'requestService', 
                                          'constService', 
                                          'getJSONService',
-                                         ($scope, $http, $timeout, $location, requestService, constService, getJSONService) => {
+                                         'isIEService',
+                                         ($scope, $compile, $rootScope, $http, $timeout, $location, requestService, constService, getJSONService, isIEService) => {
+
+    /*var  element = $compile('<sectionList></sectionList>')($scope);
+    console.log(element[0].outerHTML);*/
 
     $scope.hide = {
         currentSection: true,
@@ -14,18 +19,8 @@ app.controller('OreshekNewsController', ['$scope',
         spinnerCSS: true
     };
 
-    $scope.isIE = (browser = navigator.userAgent) => {
-        if (/MSIE 10/i.test(browser) || 
-            /MSIE 9/i.test(browser) || 
-            /rv:11.0/i.test(browser) ||
-            /Edge\/\d./i.test(browser)) {
-            return true;
-        }     
-        return false;
-    };
-
     $scope.hideSpinner = (hide, browser = navigator.userAgent) => { 
-        if($scope.isIE(browser)) {
+        if(isIEService.detect(browser)) {
             $scope.hide.spinnerGIF = hide;
         }
         else {

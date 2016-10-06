@@ -21,7 +21,10 @@ app.controller('MainController', ['$scope', '$location', function ($scope, $loca
         }
     };
 }]);
-app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$location', 'requestService', 'constService', 'getJSONService', function ($scope, $http, $timeout, $location, requestService, constService, getJSONService) {
+app.controller('OreshekNewsController', ['$scope', '$compile', '$rootScope', '$http', '$timeout', '$location', 'requestService', 'constService', 'getJSONService', 'isIEService', function ($scope, $compile, $rootScope, $http, $timeout, $location, requestService, constService, getJSONService, isIEService) {
+
+    /*var  element = $compile('<sectionList></sectionList>')($scope);
+    console.log(element[0].outerHTML);*/
 
     $scope.hide = {
         currentSection: true,
@@ -30,19 +33,10 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$locati
         spinnerCSS: true
     };
 
-    $scope.isIE = function () {
-        var browser = arguments.length <= 0 || arguments[0] === undefined ? navigator.userAgent : arguments[0];
-
-        if (/MSIE 10/i.test(browser) || /MSIE 9/i.test(browser) || /rv:11.0/i.test(browser) || /Edge\/\d./i.test(browser)) {
-            return true;
-        }
-        return false;
-    };
-
     $scope.hideSpinner = function (hide) {
-        var browser = arguments.length <= 1 || arguments[1] === undefined ? navigator.userAgent : arguments[1];
+        var browser = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : navigator.userAgent;
 
-        if ($scope.isIE(browser)) {
+        if (isIEService.detect(browser)) {
             $scope.hide.spinnerGIF = hide;
         } else {
             $scope.hide.spinnerCSS = hide;
@@ -65,7 +59,7 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$locati
     });
 
     $scope.chooseSection = function () {
-        var currentSection = arguments.length <= 0 || arguments[0] === undefined ? 'Show all sections...' : arguments[0];
+        var currentSection = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'Show all sections...';
 
         $(".select_button").blur();
         $scope.hideSpinner(false);
@@ -113,33 +107,60 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$locati
         $(".logo").removeClass("logo_top");
     };
 }]);
+app.controller('PlayerController', ['$scope', '$rootScope', 'isIEService', function ($scope, $rootScope, isIEService) {
+    $scope.setPlayer = function () {
+        var browser = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : navigator.userAgent;
+
+        if (!device.tablet() && !device.mobile() && !isIEService.detect(browser)) {
+            $(".player").mb_YTPlayer({
+                videoURL: 'https://www.youtube.com/watch?v=-ILqHSH4X_w',
+                containment: 'header',
+                autoPlay: true,
+                mute: true,
+                startAt: 10,
+                opacity: 1,
+                showControls: false
+            });
+        } else {
+            $("body").addClass("background");
+        };
+    };
+
+    $scope.setPlayer();
+}]);
 app.service('constService', function () {
-    var constants = {
+    return {
         apiKey: 'e0990f52eb2943e4a08c5feb52064044',
         articlesUrl: 'https://api.nytimes.com/svc/search/v2/articlesearch.json',
         commonUrl: 'http://www.nytimes.com/',
         dataPath: '../resources/data/sections.json'
     };
-
-    return constants;
 });
 app.service('getJSONService', function () {
-    var getJSONService = {};
-
-    getJSONService.getInfo = function (pathToFile, callback) {
-        $.getJSON(pathToFile, callback);
+    return {
+        getInfo: function getInfo(pathToFile, callback) {
+            $.getJSON(pathToFile, callback);
+        }
     };
+});
+app.service('isIEService', function () {
+    return {
+        detect: function detect() {
+            var browser = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : navigator.userAgent;
 
-    return getJSONService;
+            if (/MSIE 10/i.test(browser) || /MSIE 9/i.test(browser) || /rv:11.0/i.test(browser) || /Edge\/\d./i.test(browser)) {
+                return true;
+            }
+            return false;
+        }
+    };
 });
 app.service('requestService', ['$http', function ($http) {
-    var requestService = {};
-
-    requestService.makeRequest = function (url) {
-        return $http.get(url);
+    return {
+        makeRequest: function makeRequest(url) {
+            return $http.get(url);
+        }
     };
-
-    return requestService;
 }]);
 
 app.directive('news', function () {
@@ -148,32 +169,16 @@ app.directive('news', function () {
         templateUrl: '../../directives/news/news.html'
     };
 });
-app.directive('player', function () {
-    return {
-        require: '^OreshekNewsController',
-        restrict: 'E',
-        templateUrl: '../../directives/player/player.html',
-        controller: function controller($scope) {
-            if (!device.tablet() && !device.mobile() && !$scope.isIE()) {
-                $(".player").mb_YTPlayer({
-                    videoURL: 'https://www.youtube.com/watch?v=-ILqHSH4X_w',
-                    containment: 'header',
-                    autoPlay: true,
-                    mute: true,
-                    startAt: 10,
-                    opacity: 1,
-                    showControls: false
-                });
-            } else {
-                $("body").addClass("background");
-            };
-        }
-    };
-});
 app.directive('sectionList', function () {
     return {
         restrict: 'E',
         templateUrl: '../../directives/sectionList/sectionList.html'
+    };
+});
+app.directive('player', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '../../directives/player/player.html'
     };
 });
 app.directive('selectForm', function () {
