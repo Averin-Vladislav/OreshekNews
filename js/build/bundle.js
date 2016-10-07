@@ -21,11 +21,7 @@ app.controller('MainController', ['$scope', '$location', function ($scope, $loca
         }
     };
 }]);
-app.controller('OreshekNewsController', ['$scope', '$compile', '$rootScope', '$http', '$timeout', '$location', 'requestService', 'constService', 'getJSONService', 'isIEService', function ($scope, $compile, $rootScope, $http, $timeout, $location, requestService, constService, getJSONService, isIEService) {
-
-    /*var  element = $compile('<sectionList></sectionList>')($scope);
-    console.log(element[0].outerHTML);*/
-
+app.controller('OreshekNewsController', ['$scope', '$compile', '$rootScope', '$http', '$timeout', '$location', 'requestService', 'constService', 'isIEService', function ($scope, $compile, $rootScope, $http, $timeout, $location, requestService, constService, isIEService) {
     $scope.hide = {
         currentSection: true,
         sectionsList: true,
@@ -53,8 +49,9 @@ app.controller('OreshekNewsController', ['$scope', '$compile', '$rootScope', '$h
 
     $scope.waitPageLoading();
 
-    getJSONService.getInfo(constService.dataPath, function (data) {
-        $scope.sections = data.sections;
+    var jsonPromise = requestService.makeRequest(constService.dataPath);
+    jsonPromise.then(function (response) {
+        $scope.sections = response.data.sections;
         $scope.sectionsList = $scope.sections.slice(0, $scope.sections.length - 1);
     });
 
@@ -72,12 +69,12 @@ app.controller('OreshekNewsController', ['$scope', '$compile', '$rootScope', '$h
         } else {
             $scope.hide.currentSection = false;
             $scope.hide.sectionsList = true;
-            var url = constService.articlesUrl + '?' + $.param({
+            $scope.url = constService.articlesUrl + '?' + $.param({
                 'api-key': constService.apiKey,
                 'fq': 'news_desk:("' + currentSection + '")'
             });
 
-            var promise = requestService.makeRequest(url);
+            var promise = requestService.makeRequest($scope.url);
             promise.then(function (response) {
                 $scope.hideSpinner(true);
                 $scope.articles = response.data.response.docs;
@@ -136,13 +133,6 @@ app.service('constService', function () {
         dataPath: '../resources/data/sections.json'
     };
 });
-app.service('getJSONService', function () {
-    return {
-        getInfo: function getInfo(pathToFile, callback) {
-            $.getJSON(pathToFile, callback);
-        }
-    };
-});
 app.service('isIEService', function () {
     return {
         detect: function detect() {
@@ -163,28 +153,28 @@ app.service('requestService', ['$http', function ($http) {
     };
 }]);
 
-app.directive('news', function () {
-    return {
-        restrict: 'E',
-        templateUrl: '../../directives/news/news.html'
-    };
-});
-app.directive('sectionList', function () {
-    return {
-        restrict: 'E',
-        templateUrl: '../../directives/sectionList/sectionList.html'
-    };
-});
 app.directive('player', function () {
     return {
         restrict: 'E',
         templateUrl: '../../directives/player/player.html'
     };
 });
+app.directive('news', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '../../directives/news/news.html'
+    };
+});
 app.directive('selectForm', function () {
     return {
         restrict: 'E',
         templateUrl: '../../directives/selectForm/selectForm.html'
+    };
+});
+app.directive('sectionList', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '../../directives/sectionList/sectionList.html'
     };
 });
 app.directive('spinner', function () {

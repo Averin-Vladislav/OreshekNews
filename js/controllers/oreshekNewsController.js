@@ -5,13 +5,8 @@ app.controller('OreshekNewsController', ['$scope', '$compile',
                                          '$location', 
                                          'requestService', 
                                          'constService', 
-                                         'getJSONService',
                                          'isIEService',
-                                         ($scope, $compile, $rootScope, $http, $timeout, $location, requestService, constService, getJSONService, isIEService) => {
-
-    /*var  element = $compile('<sectionList></sectionList>')($scope);
-    console.log(element[0].outerHTML);*/
-
+                                         ($scope, $compile, $rootScope, $http, $timeout, $location, requestService, constService, isIEService) => {
     $scope.hide = {
         currentSection: true,
         sectionsList: true,
@@ -38,8 +33,9 @@ app.controller('OreshekNewsController', ['$scope', '$compile',
 
     $scope.waitPageLoading();
 
-    getJSONService.getInfo(constService.dataPath, (data) => {
-        $scope.sections = data.sections;
+    let jsonPromise = requestService.makeRequest(constService.dataPath);
+    jsonPromise.then(function (response) {
+        $scope.sections = response.data.sections;
         $scope.sectionsList = $scope.sections.slice(0, $scope.sections.length - 1);
     });
 
@@ -56,12 +52,12 @@ app.controller('OreshekNewsController', ['$scope', '$compile',
         else {
             $scope.hide.currentSection = false;
             $scope.hide.sectionsList = true;
-            let url = constService.articlesUrl + '?' + $.param({
+            $scope.url = constService.articlesUrl + '?' + $.param({
                 'api-key': constService.apiKey,
                 'fq': `news_desk:("${currentSection}")`
             });
 
-            let promise = requestService.makeRequest(url);
+            let promise = requestService.makeRequest($scope.url);
             promise.then(function (response) {
                 $scope.hideSpinner(true);
                 $scope.articles = response.data.response.docs;
