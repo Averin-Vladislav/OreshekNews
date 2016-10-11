@@ -153,28 +153,28 @@ app.service('requestService', ['$http', function ($http) {
     };
 }]);
 
-app.directive('player', function () {
-    return {
-        restrict: 'E',
-        templateUrl: '../../directives/player/player.html'
-    };
-});
 app.directive('news', function () {
     return {
         restrict: 'E',
         templateUrl: '../../directives/news/news.html'
     };
 });
-app.directive('selectForm', function () {
+app.directive('player', function () {
     return {
         restrict: 'E',
-        templateUrl: '../../directives/selectForm/selectForm.html'
+        templateUrl: '../../directives/player/player.html'
     };
 });
 app.directive('sectionList', function () {
     return {
         restrict: 'E',
         templateUrl: '../../directives/sectionList/sectionList.html'
+    };
+});
+app.directive('selectForm', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '../../directives/selectForm/selectForm.html'
     };
 });
 app.directive('spinner', function () {

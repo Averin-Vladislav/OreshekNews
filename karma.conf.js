@@ -15,9 +15,9 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'libraries/build/libs.min.js',
-      'js/build/bundle.js',
-      'js/tests/**/*.js'
+      'client/libraries/build/libs.min.js',
+      'client/js/build/bundle.js',
+      'client/js/tests/**/*.js'
     ],
 
 
@@ -29,7 +29,7 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'js/build/bundle.js' : ['coverage']
+      'client/js/build/bundle.js' : ['coverage']
     },
 
     coverageReporter : {
