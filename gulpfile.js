@@ -73,7 +73,7 @@ gulp.task('img', () => {
           svgoPlugins: [{removeViewBox: false}],
           une: [pngquant()]
         })))
-        .pipe(gulp.dest('resources/min'));
+        .pipe(gulp.dest('client/resources/min'));
 });
 
 gulp.task('refresh', () => {
