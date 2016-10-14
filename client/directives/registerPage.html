@@ -1,0 +1,18 @@
+<div class="register_page" ng-controller="RegisterController">
+    <div class="container">
+        <fieldset class="form-group">
+            <input type="text" name="username" placeholder="Username">
+            <input type="password" name="password" placeholder="Password">
+            <input type="password" name="password" placeholder="Retype Password">
+        </fieldset>
+        <input type="submit" class="btn btn-primary register_btn" value="Submit" ng-click="makeRequest()"/>
+        <div class="btn btn-default register_btn" ng-click="switchPage('login')">Back to Login</div>
+    </div>
+    <div class="a_footer">
+        <div class="copyright">
+            <p class="name">by Averin Vladislav&copy;</p>
+            <a href="https://www.facebook.com/vladik.averin" target="_blank">Contact me</a>
+            <div class="switch_page_ref" ng-click="switchPage('main')">back to Main page</div>
+        </div>
+    </div>
+</div>

@@ -5,19 +5,27 @@ var app = angular.module('oreshekNews', ['ngRoute']);
 app.controller('AdministrativeController', ['$scope', function ($scope) {
     //pending implementation
 }]);
+app.controller('LoginController', ['$scope', '$location', function ($scope, $location) {
+    //pending implementation
+}]);
 app.controller('MainController', ['$scope', '$location', function ($scope, $location) {
-    $scope.nextPage = 'Admin page';
-    $scope.currentPage = 'Main page';
-
-    $scope.switchPage = function (currentPage) {
-        if (currentPage === 'Main page') {
-            $scope.nextPage = 'back to Main page';
-            $scope.currentPage = 'Admin page';
-            $location.path('admin');
-        } else {
-            $scope.nextPage = 'Admin page';
-            $scope.currentPage = 'Main page';
-            $location.path('');
+    $scope.switchPage = function (nextPage) {
+        switch (nextPage) {
+            case 'main':
+                $location.path('');
+                break;
+            case 'admin':
+                $location.path('admin');
+                break;
+            case 'login':
+                $location.path('login');
+                break;
+            case 'register':
+                $location.path('register');
+                break;
+            default:
+                $location.path('');
+                break;
         }
     };
 }]);
@@ -125,6 +133,20 @@ app.controller('PlayerController', ['$scope', '$rootScope', 'isIEService', funct
 
     $scope.setPlayer();
 }]);
+app.controller('RegisterController', ['$scope', '$http', function ($scope, $http) {
+    $scope.makeRequest = function () {
+        console.log('makeRequest() is working');
+        $http({
+            url: 'http://localhost:3000/message',
+            method: "POST",
+            data: { message: 'Hi, i\'m a client!' }
+        }).then(function (response) {
+            // success
+        }, function (response) {// optional
+            // failed
+        });
+    };
+}]);
 app.service('constService', function () {
     return {
         apiKey: 'e0990f52eb2943e4a08c5feb52064044',
@@ -188,5 +210,9 @@ app.config(function ($routeProvider) {
         templateUrl: '../../directives/mainPage.html'
     }).when('/admin', {
         templateUrl: '../../directives/adminPage.html'
+    }).when('/login', {
+        templateUrl: '../../directives/loginPage.html'
+    }).when('/register', {
+        templateUrl: '../../directives/registerPage.html'
     }).otherwise({ redirectTo: '/' });
 });

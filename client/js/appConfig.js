@@ -6,5 +6,11 @@ app.config(function($routeProvider) {
     .when('/admin', {
         templateUrl: '../../directives/adminPage.html'
     })
+    .when('/login', {
+        templateUrl: '../../directives/loginPage.html'
+    })
+    .when('/register', {
+        templateUrl: '../../directives/registerPage.html'
+    })
     .otherwise({ redirectTo: '/'});
 });

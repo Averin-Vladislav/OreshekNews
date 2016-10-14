@@ -218,6 +218,7 @@ header {
 .copyright {
     text-align: center;
     a, .switch_page_ref {
+        margin-right: 10px;
         display: inline-block;
         color: $link;
         &:hover {

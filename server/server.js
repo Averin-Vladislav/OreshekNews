@@ -21,7 +21,35 @@ var routes = require('./routes/index'),
 // Init App
 var app = express();
 
-// View Engine
+// Connect Flash
+app.use(flash());
+
+app.set('port', process.env.PORT || 3000);
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    next();
+});
+
+app.post('/message', function(req, res) {
+  console.log('i\'m a server');
+  console.log(req.body.message);
+});
+
+app.listen(app.get('port'), function(){
+  console.log('Express started press Ctrl-C to terminate');
+});
+
+
+
+/*// View Engine
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({defaultLayout:'layout'}));
 app.set('view engine', 'handlebars');
@@ -83,4 +111,4 @@ app.set('port', (process.env.PORT || 3000));
 
 app.listen(app.get('port'), function(){
 	console.log('Server started on port '+app.get('port'));
-});
+});*/
