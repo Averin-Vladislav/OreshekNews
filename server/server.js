@@ -21,8 +21,23 @@ var routes = require('./routes/index'),
 // Init App
 var app = express();
 
-// Connect Flash
-app.use(flash());
+// Express Validator
+app.use(expressValidator({
+  errorFormatter: function(param, msg, value) {
+      var namespace = param.split('.')
+      , root    = namespace.shift()
+      , formParam = root;
+
+    while(namespace.length) {
+      formParam += '[' + namespace.shift() + ']';
+    }
+    return {
+      param : formParam,
+      msg   : msg,
+      value : value
+    };
+  }
+}));
 
 app.set('port', process.env.PORT || 3000);
 
@@ -38,9 +53,43 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.post('/message', function(req, res) {
-  console.log('i\'m a server');
-  console.log(req.body.message);
+app.post('/login', function(req, res) {
+  var username = req.body.userData.username;
+  var password = req.body.userData.password;
+
+  var errors = req.validationErrors();
+
+  if(errors) {
+    console.log('YES');
+  } 
+  else {
+    console.log('NO');
+  }
+});
+
+app.post('/register', function(req, res) {
+  var name      = req.body.name;
+  var email     = req.body.email;
+  var username  = req.body.username;
+  var password  = req.body.password;
+  var password2 = req.body.password2;
+  console.log(name);
+
+  req.checkBody('name', 'Name is required').notEmpty();
+  req.checkBody('email', 'Emial is required').notEmpty();
+  req.checkBody('email', 'Email is not valid').isEmail();
+  req.checkBody('username', 'Username is required').notEmpty();
+  req.checkBody('password', 'Password is required').notEmpty();
+  req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
+
+  var errors = req.validationErrors();
+
+  if(errors) {
+    console.log('YES');
+  } 
+  else {
+    console.log('NO');
+  }
 });
 
 app.listen(app.get('port'), function(){

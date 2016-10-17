@@ -6,7 +6,24 @@ app.controller('AdministrativeController', ['$scope', function ($scope) {
     //pending implementation
 }]);
 app.controller('LoginController', ['$scope', '$location', function ($scope, $location) {
-    //pending implementation
+    var userData = {};
+
+    $scope.makeRequest = function () {
+        userData.email = $scope.email;
+        userData.username = $scope.username;
+        userData.password = $scope.password;
+
+        console.log('makeRequest() is working');
+        $http({
+            url: 'http://localhost:3000/message',
+            method: "POST",
+            data: { userData: userData }
+        }).then(function (response) {
+            // success
+        }, function (response) {// optional
+            // failed
+        });
+    };
 }]);
 app.controller('MainController', ['$scope', '$location', function ($scope, $location) {
     $scope.switchPage = function (nextPage) {
@@ -134,12 +151,24 @@ app.controller('PlayerController', ['$scope', '$rootScope', 'isIEService', funct
     $scope.setPlayer();
 }]);
 app.controller('RegisterController', ['$scope', '$http', function ($scope, $http) {
+    var name, email, username, password, password2;
+
     $scope.makeRequest = function () {
+        name = $scope.name;
+        email = $scope.email;
+        username = $scope.username;
+        password = $scope.password;
+        password2 = $scope.password2;
+
         console.log('makeRequest() is working');
         $http({
-            url: 'http://localhost:3000/message',
+            url: 'http://localhost:3000/register',
             method: "POST",
-            data: { message: 'Hi, i\'m a client!' }
+            data: { name: name,
+                email: email,
+                username: username,
+                password: password,
+                password2: password2 }
         }).then(function (response) {
             // success
         }, function (response) {// optional
