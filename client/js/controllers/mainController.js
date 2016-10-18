@@ -1,4 +1,5 @@
 app.controller('MainController', ['$scope', '$location', ($scope, $location) => {
+
     $scope.switchPage = (nextPage) => {
         switch(nextPage) {
             case 'main' :     $location.path('');
@@ -6,7 +7,7 @@ app.controller('MainController', ['$scope', '$location', ($scope, $location) => 
             case 'admin' :    $location.path('admin');
                               break;
             case 'login' :    $location.path('login');
-                              break; 
+                              break;                   
             case 'register' : $location.path('register');
                               break; 
             default :         $location.path('');

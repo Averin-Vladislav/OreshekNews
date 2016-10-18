@@ -1,22 +1,28 @@
-app.controller('LoginController', ['$scope', '$location', function($scope, $location){
+app.controller('LoginController', ['$scope', '$http', '$location', function($scope, $http, $location){
     var userData = {};
-    
-    $scope.makeRequest = () => {
-        userData.email =  $scope.email;
-        userData.username =  $scope.username;
-        userData.password =  $scope.password;
+    var username,
+        password;
 
-        console.log('makeRequest() is working');
+    $scope.showErrorNote = false;
+
+    $scope.makeRequest = () => {
+        username =  $scope.username;
+        password =  $scope.password;
+
         $http({
-            url: 'http://localhost:3000/message',
+            url: 'http://localhost:3000/login',
             method: "POST",
-            data: { userData : userData }
+            data: { username : username,
+                    password : password }
         })
         .then(function(response) {
-                // success
+            if(response.status === 202) {
+                $location.path('');
+                $scope.showErrorNote = false;
+            }
         }, 
-        function(response) { // optional
-                // failed
+        function(response) { 
+            $scope.showErrorNote = true;
         });
-    }
+    }    
 }]);

@@ -51,19 +51,9 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.post('/login', function(req, res) {
-  var username = req.body.userData.username;
-  var password = req.body.userData.password;
-
-  var errors = req.validationErrors();
-
-  if(errors) {
-    console.log('YES');
-  } 
-  else {
-    console.log('NO');
-  }
-});
+// Passport init
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.post('/register', function(req, res) {
   var name      = req.body.name;
@@ -101,11 +91,46 @@ app.post('/register', function(req, res) {
   }
 });
 
-app.listen(app.get('port'), function(){
-  console.log('Express started press Ctrl-C to terminate');
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    User.getUserByUsername(username, function(err, user){
+    if(err) throw err;
+    if(!user){
+      return done(null, false, {message: 'Unknown User'});
+    }
+
+    User.comparePassword(password, user.password, function(err, isMatch){
+      if(err) throw err;
+      if(isMatch){
+        return done(null, user);
+      } 
+      else {
+        return done(null, false, {message: 'Invalid password'});
+      }
+    });
+  });
+}));
+
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
 });
 
+passport.deserializeUser(function(id, done) {
+  User.getUserById(id, function(err, user) {
+    done(err, user);
+  });
+});
 
+app.post('/login',
+  passport.authenticate('local'), function(req, res) {
+    console.log('authentication was complete successfuly');
+    res.status(202);
+    res.send('Authorized');
+});
+
+app.listen(app.get('port'), function(){
+  console.log('Express started on port 3000. Press Ctrl-C to terminate');
+});
 
 /*// View Engine
 app.set('views', path.join(__dirname, 'views'));

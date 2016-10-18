@@ -5,27 +5,33 @@ var app = angular.module('oreshekNews', ['ngRoute']);
 app.controller('AdministrativeController', ['$scope', function ($scope) {
     //pending implementation
 }]);
-app.controller('LoginController', ['$scope', '$location', function ($scope, $location) {
+app.controller('LoginController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
     var userData = {};
+    var username, password;
+
+    $scope.showErrorNote = false;
 
     $scope.makeRequest = function () {
-        userData.email = $scope.email;
-        userData.username = $scope.username;
-        userData.password = $scope.password;
+        username = $scope.username;
+        password = $scope.password;
 
-        console.log('makeRequest() is working');
         $http({
-            url: 'http://localhost:3000/message',
+            url: 'http://localhost:3000/login',
             method: "POST",
-            data: { userData: userData }
+            data: { username: username,
+                password: password }
         }).then(function (response) {
-            // success
-        }, function (response) {// optional
-            // failed
+            if (response.status === 202) {
+                $location.path('');
+                $scope.showErrorNote = false;
+            }
+        }, function (response) {
+            $scope.showErrorNote = true;
         });
     };
 }]);
 app.controller('MainController', ['$scope', '$location', function ($scope, $location) {
+
     $scope.switchPage = function (nextPage) {
         switch (nextPage) {
             case 'main':
