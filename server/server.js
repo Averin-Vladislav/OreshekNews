@@ -11,12 +11,10 @@ var LocalStrategy = require('passport-local').Strategy;
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/loginapp');
+mongoose.connect('mongodb://localhost/oreshekNews');
 var db = mongoose.connection;
 
-
-var routes = require('./routes/index'),
-    users  = require('./routes/users');
+var User = require('./models/user');
 
 // Init App
 var app = express();
@@ -73,7 +71,6 @@ app.post('/register', function(req, res) {
   var username  = req.body.username;
   var password  = req.body.password;
   var password2 = req.body.password2;
-  console.log(name);
 
   req.checkBody('name', 'Name is required').notEmpty();
   req.checkBody('email', 'Emial is required').notEmpty();
@@ -85,10 +82,22 @@ app.post('/register', function(req, res) {
   var errors = req.validationErrors();
 
   if(errors) {
-    console.log('YES');
+    res.status(401);
+    res.send('Unauthorized');
   } 
   else {
-    console.log('NO');
+    var newUser = new User({
+      name: name,
+      email: email, 
+      username: username,
+      password: password
+    });
+    User.createUser(newUser, function(err, user) {
+      if(err) throw err;
+      console.log(user);
+    });
+    res.status(201);
+    res.send('Authorized');
   }
 });
 
@@ -102,6 +111,9 @@ app.listen(app.get('port'), function(){
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({defaultLayout:'layout'}));
 app.set('view engine', 'handlebars');
+
+var routes = require('./routes/index'),
+    users  = require('./routes/users');
 
 // BodyParser Middleware
 app.use(bodyParser.json());

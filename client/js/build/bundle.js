@@ -150,8 +150,10 @@ app.controller('PlayerController', ['$scope', '$rootScope', 'isIEService', funct
 
     $scope.setPlayer();
 }]);
-app.controller('RegisterController', ['$scope', '$http', function ($scope, $http) {
+app.controller('RegisterController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
     var name, email, username, password, password2;
+
+    $scope.showErrorNote = false;
 
     $scope.makeRequest = function () {
         name = $scope.name;
@@ -160,7 +162,6 @@ app.controller('RegisterController', ['$scope', '$http', function ($scope, $http
         password = $scope.password;
         password2 = $scope.password2;
 
-        console.log('makeRequest() is working');
         $http({
             url: 'http://localhost:3000/register',
             method: "POST",
@@ -170,9 +171,12 @@ app.controller('RegisterController', ['$scope', '$http', function ($scope, $http
                 password: password,
                 password2: password2 }
         }).then(function (response) {
-            // success
-        }, function (response) {// optional
-            // failed
+            $scope.showErrorNote = false;
+            $location.path('login');
+        }, function (response) {
+            if (response.status === 401) {
+                $scope.showErrorNote = true;
+            }
         });
     };
 }]);

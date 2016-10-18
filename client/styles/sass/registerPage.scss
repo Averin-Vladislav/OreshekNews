@@ -15,4 +15,15 @@
         display: block;
         margin: 5px auto;
     }
+
+    .error_note {
+        height: 30px;
+        width: 300px;
+        background-color: tomato;
+        color: darkred;
+        border: 1px darkred solid;
+        border-radius: 3px;
+        margin: 10px auto;
+        line-height: 30px;
+    }
 }

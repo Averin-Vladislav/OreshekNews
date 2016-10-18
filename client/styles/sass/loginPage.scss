@@ -10,4 +10,31 @@
         text-align: center;
         padding: 30px;
     }
+
+    input {
+        display: block;
+        margin: 5px auto;
+    }
+
+    /*.success_register_note {
+        height: 30px;
+        width: 300px;
+        background-color: lightgreen;
+        color: seagreen;
+        border: 1px seagreen solid;
+        border-radius: 3px;
+        margin: 10px auto;
+        line-height: 30px;
+    }*/
+
+    .error_note {
+        height: 30px;
+        width: 300px;
+        background-color: tomato;
+        color: darkred;
+        border: 1px darkred solid;
+        border-radius: 3px;
+        margin: 10px auto;
+        line-height: 30px;
+    }
 }
