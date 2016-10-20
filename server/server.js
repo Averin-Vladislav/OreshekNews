@@ -1,184 +1,42 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var exphbs = require('express-handlebars');
-var expressValidator = require('express-validator');
-var flash = require('connect-flash');
-var session = require('express-session');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var mongo = require('mongodb');
-var mongoose = require('mongoose');
+var express              = require('express'),
+    cookieParser         = require('cookie-parser'),   
+    exphbs               = require('express-handlebars'),
+    passport             = require('passport'),
+    mongo                = require('mongodb'),
+    mongoose             = require('mongoose'),
+    bodyParser           = require('body-parser'),
+    serverConfig         = require('./config/serverConfig.js'),
+    dataBaseConfig       = require('./config/dataBaseConfig.js'),
+    passportConfig       = require('./config/passportConfig.js'),
+    authenticationRoutes = require('./routes/authenticationRoutes.js'),
+    app;
 
-mongoose.connect('mongodb://localhost/oreshekNews');
-var db = mongoose.connection;
+app = express();
 
-var User = require('./models/user');
+mongoose.Promise = global.Promise;
+mongoose.connect(dataBaseConfig.path);
 
-// Init App
-var app = express();
-
-// Express Validator
-app.use(expressValidator({
-  errorFormatter: function(param, msg, value) {
-      var namespace = param.split('.')
-      , root    = namespace.shift()
-      , formParam = root;
-
-    while(namespace.length) {
-      formParam += '[' + namespace.shift() + ']';
-    }
-    return {
-      param : formParam,
-      msg   : msg,
-      value : value
-    };
-  }
-}));
-
-app.set('port', process.env.PORT || 3000);
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-
-app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-
-    next();
-});
-
-// Passport init
+passportConfig(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.post('/register', function(req, res) {
-  var name      = req.body.name;
-  var email     = req.body.email;
-  var username  = req.body.username;
-  var password  = req.body.password;
-  var password2 = req.body.password2;
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app = serverConfig(app);
 
-  req.checkBody('name', 'Name is required').notEmpty();
-  req.checkBody('email', 'Emial is required').notEmpty();
-  req.checkBody('email', 'Email is not valid').isEmail();
-  req.checkBody('username', 'Username is required').notEmpty();
-  req.checkBody('password', 'Password is required').notEmpty();
-  req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
+app = authenticationRoutes(app);
 
-  var errors = req.validationErrors();
-
-  if(errors) {
-    res.status(401);
-    res.send('Unauthorized');
-  } 
-  else {
-    var newUser = new User({
-      name: name,
-      email: email, 
-      username: username,
-      password: password
-    });
-    User.createUser(newUser, function(err, user) {
-      if(err) throw err;
-      console.log(user);
-    });
-    res.status(201);
-    res.send('Authorized');
-  }
-});
-
-passport.use(new LocalStrategy(
-  function(username, password, done) {
-    User.getUserByUsername(username, function(err, user){
-    if(err) throw err;
-    if(!user){
-      return done(null, false, {message: 'Unknown User'});
-    }
-
-    User.comparePassword(password, user.password, function(err, isMatch){
-      if(err) throw err;
-      if(isMatch){
-        return done(null, user);
-      } 
-      else {
-        return done(null, false, {message: 'Invalid password'});
-      }
-    });
-  });
-}));
-
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-  User.getUserById(id, function(err, user) {
-    done(err, user);
-  });
-});
-
-app.post('/login',
-  passport.authenticate('local'), function(req, res) {
-    console.log('authentication was complete successfuly');
-    res.status(202);
-    res.send('Authorized');
-});
-
-app.listen(app.get('port'), function(){
+app.listen(app.get('port'), function() {
   console.log('Express started on port 3000. Press Ctrl-C to terminate');
 });
 
-/*// View Engine
-app.set('views', path.join(__dirname, 'views'));
-app.engine('handlebars', exphbs({defaultLayout:'layout'}));
-app.set('view engine', 'handlebars');
-
-var routes = require('./routes/index'),
-    users  = require('./routes/users');
-
-// BodyParser Middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-
-// Set Static Folder
-app.use(express.static(path.join(__dirname, 'public')));
-
+/*
 // Express Session
 app.use(session({
     secret: 'secret',
     saveUninitialized: true,
     resave: true
 }));
-
-// Passport init
-app.use(passport.initialize());
-app.use(passport.session());
-
-// Express Validator
-app.use(expressValidator({
-  errorFormatter: function(param, msg, value) {
-      var namespace = param.split('.')
-      , root    = namespace.shift()
-      , formParam = root;
-
-    while(namespace.length) {
-      formParam += '[' + namespace.shift() + ']';
-    }
-    return {
-      param : formParam,
-      msg   : msg,
-      value : value
-    };
-  }
-}));
-
-// Connect Flash
-app.use(flash());
 
 // Global Vars
 app.use(function (req, res, next) {
@@ -188,13 +46,4 @@ app.use(function (req, res, next) {
   res.locals.user = req.user || null;
   next();
 });
-
-app.use('/', routes);
-app.use('/users', users);
-
-// Set Port
-app.set('port', (process.env.PORT || 3000));
-
-app.listen(app.get('port'), function(){
-	console.log('Server started on port '+app.get('port'));
-});*/
+*/
