@@ -1,6 +1,4 @@
-var express              = require('express'),
-    cookieParser         = require('cookie-parser'),   
-    exphbs               = require('express-handlebars'),
+var express              = require('express'),  
     passport             = require('passport'),
     mongo                = require('mongodb'),
     mongoose             = require('mongoose'),
@@ -9,6 +7,7 @@ var express              = require('express'),
     dataBaseConfig       = require('./config/dataBaseConfig.js'),
     passportConfig       = require('./config/passportConfig.js'),
     authenticationRoutes = require('./routes/authenticationRoutes.js'),
+    bookmarksRoutes      = require('./routes/bookmarksRoutes.js'),
     app;
 
 app = express();
@@ -25,25 +24,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app = serverConfig(app);
 
 app = authenticationRoutes(app);
+app = bookmarksRoutes(app);
 
 app.listen(app.get('port'), function() {
-  console.log('Express started on port 3000. Press Ctrl-C to terminate');
+  console.log('Server started on port 3000. Press Ctrl-C to terminate...');
 });
-
-/*
-// Express Session
-app.use(session({
-    secret: 'secret',
-    saveUninitialized: true,
-    resave: true
-}));
-
-// Global Vars
-app.use(function (req, res, next) {
-  res.locals.success_msg = req.flash('success_msg');
-  res.locals.error_msg = req.flash('error_msg');
-  res.locals.error = req.flash('error');
-  res.locals.user = req.user || null;
-  next();
-});
-*/

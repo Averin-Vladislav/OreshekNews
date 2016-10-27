@@ -4,5 +4,5 @@ app.service('constService', function() {
         articlesUrl: 'https://api.nytimes.com/svc/search/v2/articlesearch.json',
         commonUrl: 'http://www.nytimes.com/',
         dataPath: '../resources/data/sections.json'
-    }
+    };
 });

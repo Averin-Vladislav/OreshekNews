@@ -1,18 +1,29 @@
-app.controller('OreshekNewsController', ['$scope', '$compile', 
-                                         '$rootScope',
+app.controller('OreshekNewsController', ['$scope', 
                                          '$http', 
                                          '$timeout',
                                          '$location', 
                                          'requestService', 
                                          'constService', 
                                          'isIEService',
-                                         ($scope, $compile, $rootScope, $http, $timeout, $location, requestService, constService, isIEService) => {
+                                         'loginService',
+                                         ($scope, $http, $timeout, $location, requestService, constService, isIEService, loginService) => {
     $scope.hide = {
         currentSection: true,
         sectionsList: true,
         spinnerGIF: true,
-        spinnerCSS: true
+        spinnerCSS: true,
+        userInfo: true
     };
+
+    if(loginService.isLogin === true) {
+        $scope.hide.userInfo = false;
+    }
+    else {
+        $scope.hide.userInfo = true;
+    }
+
+    $scope.username = loginService.username;
+    $scope.avatarUrl = loginService.avatarUrl;
 
     $scope.hideSpinner = (hide, browser = navigator.userAgent) => { 
         if(isIEService.detect(browser)) {
@@ -78,6 +89,35 @@ app.controller('OreshekNewsController', ['$scope', '$compile',
         }
     };
 
+    $scope.logOut = () => {
+        $http({
+            url: 'http://localhost:3000/logout',
+            method: "GET"
+        })
+        .then(function(response) {
+            loginService.isLogin = false;
+            $location.path('');
+            $scope.hide.userInfo = true;
+        }, 
+        function(response) { 
+            console.log('user was not loged out');
+        });
+    }
+
+    $scope.uploadAvatar = () => {
+        loginService.avatarUrl = $scope.avatarUrl;
+        console.log(loginService.avatarUrl);
+        $http({
+            url: 'http://localhost:3000/uploadAvatar',
+            method: "POST",
+            data: { avatarUrl : loginService.avatarUrl}
+        })
+        .then(function(response) {
+        }, 
+        function(response) { 
+        });
+    }  
+
     $scope.toTop = () => {
         $('html,body').scrollTop(0);
     }
@@ -87,4 +127,17 @@ app.controller('OreshekNewsController', ['$scope', '$compile',
         $scope.hide.sectionsList = true;
         $(".logo").removeClass("logo_top");
     };
+
+    $scope.addToBookmarks = (article) => {
+        console.log(article.headline.main);
+        $http({
+            url: 'http://localhost:3000/addToBookmarks',
+            method: "POST",
+            data: { article : article}
+        })
+        .then(function(response) {
+        }, 
+        function(response) { 
+        });
+    } 
 }]);

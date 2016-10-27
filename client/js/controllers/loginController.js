@@ -1,4 +1,8 @@
-app.controller('LoginController', ['$scope', '$http', '$location', function($scope, $http, $location){
+app.controller('LoginController', ['$scope', 
+                                   '$http', 
+                                   '$location', 
+                                   'loginService', 
+                                   function($scope, $http, $location, loginService){
     var userData = {};
     var username,
         password;
@@ -19,10 +23,14 @@ app.controller('LoginController', ['$scope', '$http', '$location', function($sco
             if(response.status === 202) {
                 $location.path('');
                 $scope.showErrorNote = false;
+                loginService.isLogin = true;
+                loginService.username = username;
+                loginService.avatarUrl = response.data.avatarUrl;
             }
         }, 
         function(response) { 
+            loginService.isLogin = false;
             $scope.showErrorNote = true;
         });
-    }    
+    }  
 }]);

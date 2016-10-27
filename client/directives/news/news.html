@@ -1,7 +1,10 @@
 <div class="row" ng-hide="hide.currentSection">
     <div class="col-sm-6" ng-repeat="article in articles">
-        <div class="more-info">
-            <a class="more_link" href="{{article.web_url}}" target="_blank">details</a>
+        <div class="more_info">
+            <a class="more_link" href="{{article.web_url}}" target="_blank">More info...</a>
+            <div class="bookmark_button" ng-click="addToBookmarks(article)">
+                <img src="./resources/min/bookMark.png" alt="favorite_icon">
+            </div>
         </div>
         <div class="left_column">
             <div class="image_container" ng-hide="article.hideImage">

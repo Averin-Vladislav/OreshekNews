@@ -1,7 +1,6 @@
 var mongoose = require('mongoose'),
 	bcrypt   = require('bcryptjs');
 
-// User Schema
 var UserSchema = mongoose.Schema({
 	username: {
 		type: String,
@@ -15,7 +14,12 @@ var UserSchema = mongoose.Schema({
 	},
 	name: {
 		type: String
-	}
+	},
+	avatarurl: {
+		type: String
+	},
+	bookmarks: 
+		[{type: Object}]
 });
 
 var User = module.exports = mongoose.model('User', UserSchema);
@@ -44,3 +48,10 @@ module.exports.comparePassword = function(candidatePassword, hash, callback){
     	callback(null, isMatch);
 	});
 }
+
+module.exports.updateInfo = function(id, propertyName, propertyValue, callback) {
+	User.update({_id: id}, {
+	    propertyName: propertyValue
+	}, callback);
+}
+

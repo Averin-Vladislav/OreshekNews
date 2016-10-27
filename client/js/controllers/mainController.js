@@ -1,5 +1,4 @@
-app.controller('MainController', ['$scope', '$location', ($scope, $location) => {
-
+app.controller('MainController', ['$scope', '$rootScope', '$location', ($rootScope, $scope, $location) => {
     $scope.switchPage = (nextPage) => {
         switch(nextPage) {
             case 'main' :     $location.path('');

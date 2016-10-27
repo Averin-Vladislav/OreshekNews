@@ -1,6 +1,9 @@
 var User     = require('../models/userModel.js'),
     passport = require('passport');
 
+var USERNAME = "";
+var ID;
+
 module.exports = function(app) {
     app.post('/register', function(req, res) {
         var name      = req.body.name;
@@ -27,7 +30,8 @@ module.exports = function(app) {
                 name: name,
                 email: email, 
                 username: username,
-                password: password
+                password: password,
+                avatarurl: "../resources/min/profile.png"
             });
             User.createUser(newUser, function(err, user) {
                 if(err) {
@@ -41,9 +45,38 @@ module.exports = function(app) {
 
     app.post('/login', passport.authenticate('local'), function(req, res) {
         console.log('authentication was complete successfuly');
-        res.status(202);
-        res.send('Authorized');
+        var avatarUrl = "";
+        USERNAME = req.user.username;
+        User.getUserByUsername(USERNAME, function(err, docs) {
+            if(err) {
+                throw err;
+            }
+            avatarUrl = docs.avatarurl;
+            ID = docs._id;
+            res.status(202);
+            res.send({message: 'Authorized', avatarUrl: avatarUrl});
+        })
     });
+
+    app.get('/logout', function(req, res) {
+        console.log('user was loged out');
+        req.logout();
+        res.status(200);
+        res.send('Loged out');
+    }); 
+
+    app.post('/uploadAvatar', function(req, res) {
+        console.log(ID);
+        User.update({_id: ID}, {
+            avatarurl: req.body.avatarUrl
+        }, function(err, docs) {
+            if(err) {
+                throw err;
+            }
+        });
+        res.status(200);
+        res.send('Avatar was uploaded');
+    }); 
 
     return app;
 };

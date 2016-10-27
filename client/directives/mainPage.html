@@ -1,5 +1,18 @@
 <div class="main_page" ng-controller="OreshekNewsController as newsCtrl">
     <div class="wrapper">
+        <div class="user_info" ng-hide="hide.userInfo">
+            <div class="username">{{username}}</div>
+            <div class="logout_button" ng-click="logOut()">Log out</div>
+            <div class="avatar_container">
+                <img src="{{avatarUrl}}" alt="profile_image" class="avatar">
+                <div class="upload_button" ng-click="uploadAvatar()">
+                    <span>UPLOAD</span>
+                </div>
+            </div>    
+            <div class="upload_form">
+                <input type="text" placeholder=" type image url" ng-model="avatarUrl">
+            </div>    
+        </div>
         <div class="content">
             <player ng-controller="PlayerController"></player>
             <div class="header">
@@ -21,7 +34,7 @@
                 <p class="name">by Averin Vladislav&copy;</p>
                 <a href="https://www.facebook.com/vladik.averin" target="_blank">Contact me</a>
                 <div class="switch_page_ref" ng-click="switchPage('admin')">Admin</div>
-                <div class="switch_page_ref" ng-click="switchPage('login')">Login</div>
+                <div class="switch_page_ref" ng-click="switchPage('login')" ng-hide="!hide.userInfo">Login</div>
             </div>
         </div>
     </div>

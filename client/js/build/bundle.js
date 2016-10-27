@@ -5,7 +5,7 @@ var app = angular.module('oreshekNews', ['ngRoute']);
 app.controller('AdministrativeController', ['$scope', function ($scope) {
     //pending implementation
 }]);
-app.controller('LoginController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+app.controller('LoginController', ['$scope', '$http', '$location', 'loginService', function ($scope, $http, $location, loginService) {
     var userData = {};
     var username, password;
 
@@ -24,14 +24,17 @@ app.controller('LoginController', ['$scope', '$http', '$location', function ($sc
             if (response.status === 202) {
                 $location.path('');
                 $scope.showErrorNote = false;
+                loginService.isLogin = true;
+                loginService.username = username;
+                loginService.avatarUrl = response.data.avatarUrl;
             }
         }, function (response) {
+            loginService.isLogin = false;
             $scope.showErrorNote = true;
         });
     };
 }]);
-app.controller('MainController', ['$scope', '$location', function ($scope, $location) {
-
+app.controller('MainController', ['$scope', '$rootScope', '$location', function ($rootScope, $scope, $location) {
     $scope.switchPage = function (nextPage) {
         switch (nextPage) {
             case 'main':
@@ -52,13 +55,23 @@ app.controller('MainController', ['$scope', '$location', function ($scope, $loca
         }
     };
 }]);
-app.controller('OreshekNewsController', ['$scope', '$compile', '$rootScope', '$http', '$timeout', '$location', 'requestService', 'constService', 'isIEService', function ($scope, $compile, $rootScope, $http, $timeout, $location, requestService, constService, isIEService) {
+app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$location', 'requestService', 'constService', 'isIEService', 'loginService', function ($scope, $http, $timeout, $location, requestService, constService, isIEService, loginService) {
     $scope.hide = {
         currentSection: true,
         sectionsList: true,
         spinnerGIF: true,
-        spinnerCSS: true
+        spinnerCSS: true,
+        userInfo: true
     };
+
+    if (loginService.isLogin === true) {
+        $scope.hide.userInfo = false;
+    } else {
+        $scope.hide.userInfo = true;
+    }
+
+    $scope.username = loginService.username;
+    $scope.avatarUrl = loginService.avatarUrl;
 
     $scope.hideSpinner = function (hide) {
         var browser = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : navigator.userAgent;
@@ -125,6 +138,29 @@ app.controller('OreshekNewsController', ['$scope', '$compile', '$rootScope', '$h
         }
     };
 
+    $scope.logOut = function () {
+        $http({
+            url: 'http://localhost:3000/logout',
+            method: "GET"
+        }).then(function (response) {
+            loginService.isLogin = false;
+            $location.path('');
+            $scope.hide.userInfo = true;
+        }, function (response) {
+            console.log('user was not loged out');
+        });
+    };
+
+    $scope.uploadAvatar = function () {
+        loginService.avatarUrl = $scope.avatarUrl;
+        console.log(loginService.avatarUrl);
+        $http({
+            url: 'http://localhost:3000/uploadAvatar',
+            method: "POST",
+            data: { avatarUrl: loginService.avatarUrl }
+        }).then(function (response) {}, function (response) {});
+    };
+
     $scope.toTop = function () {
         $('html,body').scrollTop(0);
     };
@@ -133,6 +169,15 @@ app.controller('OreshekNewsController', ['$scope', '$compile', '$rootScope', '$h
         $scope.hide.currentSection = true;
         $scope.hide.sectionsList = true;
         $(".logo").removeClass("logo_top");
+    };
+
+    $scope.addToBookmarks = function (article) {
+        console.log(article.headline.main);
+        $http({
+            url: 'http://localhost:3000/addToBookmarks',
+            method: "POST",
+            data: { article: article }
+        }).then(function (response) {}, function (response) {});
     };
 }]);
 app.controller('PlayerController', ['$scope', '$rootScope', 'isIEService', function ($scope, $rootScope, isIEService) {
@@ -206,6 +251,13 @@ app.service('isIEService', function () {
         }
     };
 });
+app.service('loginService', function () {
+    return {
+        isLogin: false,
+        username: "",
+        avatarUrl: ""
+    };
+});
 app.service('requestService', ['$http', function ($http) {
     return {
         makeRequest: function makeRequest(url) {
@@ -226,6 +278,12 @@ app.directive('player', function () {
         templateUrl: '../../directives/player/player.html'
     };
 });
+app.directive('sectionList', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '../../directives/sectionList/sectionList.html'
+    };
+});
 app.directive('selectForm', function () {
     return {
         restrict: 'E',
@@ -236,12 +294,6 @@ app.directive('spinner', function () {
     return {
         restrict: 'E',
         templateUrl: '../../directives/spinner/spinner.html'
-    };
-});
-app.directive('sectionList', function () {
-    return {
-        restrict: 'E',
-        templateUrl: '../../directives/sectionList/sectionList.html'
     };
 });
 app.config(function ($routeProvider) {
