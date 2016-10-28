@@ -18,8 +18,14 @@ var UserSchema = mongoose.Schema({
 	avatarurl: {
 		type: String
 	},
-	bookmarks: 
-		[{type: Object}]
+	bookmarks: [{
+		web_url: String,
+		gallery: String,
+		date: String,
+		author: String,
+		title: String,
+		lead_paragraph: String
+	}]
 });
 
 var User = module.exports = mongoose.model('User', UserSchema);

@@ -1,9 +1,9 @@
-<div class="row" ng-hide="hide.currentSection">
+<div class="row" ng-hide="hide.bookmarks">
     <div class="col-sm-6" ng-repeat="article in articles">
         <div class="more_info">
             <a class="more_link" href="{{article.web_url}}" target="_blank">More info...</a>
-            <div class="bookmark_button" ng-click="addToBookmarks(article)" ng-hide="hide.userInfo">
-                <img src="{{article.bookmark}}" alt="favorite_icon">
+            <div class="bookmark_button" ng-click="deleteFromBookmarks(article)" ng-hide="hide.userInfo">
+                <img src="./resources/min/bookmark_marked.png" alt="favorite_icon">
             </div>
         </div>
         <div class="left_column">
@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="right_column">
-            <h3 class="article_headline">{{article.headline.main}}</h3>
+            <h3 class="article_headline">{{article.title}}</h3>
             <p>{{article.lead_paragraph}}</p>     
         </div>
         <div class="clear"></div>

@@ -59,6 +59,7 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$locati
     $scope.hide = {
         currentSection: true,
         sectionsList: true,
+        bookmarks: true,
         spinnerGIF: true,
         spinnerCSS: true,
         userInfo: true
@@ -104,6 +105,7 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$locati
 
         $(".select_button").blur();
         $scope.hideSpinner(false);
+        $scope.hide.bookmarks = true;
 
         if (currentSection === 'Show all sections...') {
             $scope.hideSpinner(true);
@@ -131,6 +133,7 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$locati
                     }
                     current.date = '' + current.pub_date.slice(0, 10);
                     current.author = current.byline && current.byline.original ? '' + current.byline.original : '';
+                    current.bookmark = "./resources/min/bookmark.png";
                 });
                 $scope.hideSpinner(true);
                 $(".logo").addClass("logo_top");
@@ -138,7 +141,31 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$locati
         }
     };
 
+    $scope.showBookmarks = function () {
+        $scope.hide.currentSection = true;
+        $scope.hide.sectionsList = true;
+        $scope.hide.bookmarks = false;
+        $(".logo").addClass("logo_top");
+
+        var url = 'http://localhost:3000/getBookmarks' + '/' + $scope.username;
+
+        $http({
+            url: url,
+            method: "GET"
+        }).then(function (response) {
+            $scope.articles = response.data.bookmarks;
+            $scope.articles.forEach(function (current, index) {
+                if (current.gallery) {
+                    current.hideImage = false;
+                } else {
+                    current.hideImage = true;
+                }
+            });
+        }, function (response) {});
+    };
+
     $scope.logOut = function () {
+        $scope.hideAll();
         $http({
             url: 'http://localhost:3000/logout',
             method: "GET"
@@ -153,7 +180,6 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$locati
 
     $scope.uploadAvatar = function () {
         loginService.avatarUrl = $scope.avatarUrl;
-        console.log(loginService.avatarUrl);
         $http({
             url: 'http://localhost:3000/uploadAvatar',
             method: "POST",
@@ -168,15 +194,25 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$locati
     $scope.hideAll = function () {
         $scope.hide.currentSection = true;
         $scope.hide.sectionsList = true;
+        $scope.hide.bookmarks = true;
         $(".logo").removeClass("logo_top");
     };
 
     $scope.addToBookmarks = function (article) {
-        console.log(article.headline.main);
+        var data = {
+            username: $scope.username,
+            web_url: article.web_url,
+            gallery: article.gallery,
+            date: article.date,
+            author: article.author,
+            title: article.headline.main,
+            lead_paragraph: article.lead_paragraph
+        };
+
         $http({
             url: 'http://localhost:3000/addToBookmarks',
             method: "POST",
-            data: { article: article }
+            data: { article: data }
         }).then(function (response) {}, function (response) {});
     };
 }]);
@@ -266,16 +302,22 @@ app.service('requestService', ['$http', function ($http) {
     };
 }]);
 
+app.directive('bookmarks', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '../../directives/bookmarks/bookmarks.html'
+    };
+});
 app.directive('news', function () {
     return {
         restrict: 'E',
         templateUrl: '../../directives/news/news.html'
     };
 });
-app.directive('selectForm', function () {
+app.directive('player', function () {
     return {
         restrict: 'E',
-        templateUrl: '../../directives/selectForm/selectForm.html'
+        templateUrl: '../../directives/player/player.html'
     };
 });
 app.directive('sectionList', function () {
@@ -284,10 +326,10 @@ app.directive('sectionList', function () {
         templateUrl: '../../directives/sectionList/sectionList.html'
     };
 });
-app.directive('player', function () {
+app.directive('selectForm', function () {
     return {
         restrict: 'E',
-        templateUrl: '../../directives/player/player.html'
+        templateUrl: '../../directives/selectForm/selectForm.html'
     };
 });
 app.directive('spinner', function () {

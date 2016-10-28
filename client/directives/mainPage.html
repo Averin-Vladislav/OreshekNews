@@ -2,6 +2,9 @@
     <div class="wrapper">
         <div class="user_info" ng-hide="hide.userInfo">
             <div class="username">{{username}}</div>
+            <div class="bookmark_button" ng-click="showBookmarks()">
+                <img src="./resources/min/bookmark.png" alt="favorite_icon">
+            </div>
             <div class="logout_button" ng-click="logOut()">Log out</div>
             <div class="avatar_container">
                 <img src="{{avatarUrl}}" alt="profile_image" class="avatar">
@@ -26,6 +29,7 @@
                     <select-form></select-form>
                     <section-list></section-list>
                     <news></news>
+                    <bookmarks></bookmarks>
                 </div>
             </div>
         </div>
