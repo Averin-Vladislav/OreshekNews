@@ -66,7 +66,6 @@ module.exports = function(app) {
     }); 
 
     app.post('/uploadAvatar', function(req, res) {
-        console.log(ID);
         User.update({_id: ID}, {
             avatarurl: req.body.avatarUrl
         }, function(err, docs) {
