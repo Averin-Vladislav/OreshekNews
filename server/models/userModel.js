@@ -61,3 +61,8 @@ module.exports.updateInfo = function(id, propertyName, propertyValue, callback) 
 	}, callback);
 }
 
+module.exports.deleteAccordingCriteria = function(username, criteria, callback) {
+	var query = {username: username};
+	User.update(query, criteria, false, callback);
+}
+

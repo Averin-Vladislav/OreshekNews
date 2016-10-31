@@ -186,6 +186,13 @@ header {
     }
 }
 
+.sub_heading_container {
+    text-align: center;
+    .sub_heading {
+        font: 40px "AmericanTextCRegular";
+    }
+}
+
 .main_section {
     margin-top: 20px;
     position: relative;

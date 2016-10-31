@@ -133,12 +133,54 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$locati
                     }
                     current.date = '' + current.pub_date.slice(0, 10);
                     current.author = current.byline && current.byline.original ? '' + current.byline.original : '';
-                    current.bookmark = "./resources/min/bookmark.png";
+
+                    var data = {
+                        username: $scope.username,
+                        title: current.headline.main
+                    };
+
+                    $http({
+                        url: 'http://localhost:3000/checkIfExists',
+                        method: "POST",
+                        data: { article: data }
+                    }).then(function (response) {
+                        if (response.data === "Data is already exists") {
+                            console.log("exists");
+                            current.bookmark = "./resources/min/bookmark_marked.png";
+                        } else {
+                            console.log("not exists");
+                            current.bookmark = "./resources/min/bookmark.png";
+                        }
+                    }, function (response) {});
                 });
                 $scope.hideSpinner(true);
                 $(".logo").addClass("logo_top");
             });
         }
+    };
+
+    $scope.checkIfExists = function (article) {
+        var data = {
+            username: $scope.username,
+            title: article.headline.main
+        };
+        console.log(data.title);
+
+        $scope.isExists = false;
+
+        $http({
+            url: 'http://localhost:3000/checkIfExists',
+            method: "POST",
+            data: { article: data }
+        }).then(function (response) {
+            if (response.data === "Data is already exists") {
+                console.log("exists");
+                $scope.isExists = true;
+            } else {
+                console.log("not exists");
+                $scope.isExists = false;
+            }
+        }, function (response) {});
     };
 
     $scope.showBookmarks = function () {
@@ -211,6 +253,21 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$locati
 
         $http({
             url: 'http://localhost:3000/addToBookmarks',
+            method: "POST",
+            data: { article: data }
+        }).then(function (response) {
+            if (response.status === "203") {}
+        }, function (response) {});
+    };
+
+    $scope.deleteFromBookmarks = function (article) {
+        var data = {
+            username: $scope.username,
+            title: article.title
+        };
+
+        $http({
+            url: 'http://localhost:3000/deleteFromBookmarks',
             method: "POST",
             data: { article: data }
         }).then(function (response) {}, function (response) {});
