@@ -1,0 +1,20 @@
+<div class="login_page" ng-controller="LoginController">
+    <div class="container">
+        <div class="error_note" ng-show="showErrorNote">Please double check your entries</div>
+        <form>
+            <fieldset class="form-group">
+                <input type="text" name="username" placeholder="Username" ng-model="username">
+                <input type="password" name="password" placeholder="Password" ng-model="password">
+            </fieldset>
+            <input type="submit" class="btn btn-primary l_register_btn" value="Submit" ng-click="makeRequest()"/>
+            <div class="btn btn-default register_btn" ng-click="switchPage('register')">Register</div>
+        </form>
+    </div>
+    <div class="a_footer">
+        <div class="copyright">
+            <p class="name">by Averin Vladislav&copy;</p>
+            <a href="https://www.facebook.com/vladik.averin" target="_blank">Contact me</a>
+            <div class="switch_page_ref" ng-click="switchPage('main')">back to Main page</div>
+        </div>
+    </div>
+</div>

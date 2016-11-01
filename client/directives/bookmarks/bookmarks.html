@@ -1,0 +1,30 @@
+<div class="row" ng-hide="hide.bookmarks">
+    <div class="sub_heading_container" ng-hide="hide.bookmarksHeading">
+        <h2 class="sub_heading">Bookmarks</h2>
+    </div>
+    <div class="no_bookmarks_msg" ng-hide="hide.noBookmarksMsg">
+        <h2 class="sub_heading">No added bookmarks yet</h2>
+    </div>
+    <div class="col-sm-6" ng-repeat="article in articles">
+        <div class="more_info">
+            <a class="more_link" href="{{article.web_url}}" target="_blank">More info...</a>
+            <div class="bookmark_button" ng-click="deleteFromBookmarks(article)" ng-hide="hide.userInfo">
+                <img src="./resources/min/bookmark_marked.png" alt="favorite_icon">
+            </div>
+        </div>
+        <div class="left_column">
+            <div class="image_container" ng-hide="article.hideImage">
+                <img src="{{article.gallery}}" />
+            </div>
+            <div class="publish_info">
+                <span>{{article.date}}</span>
+                <span>{{article.author}}</span>
+            </div>
+        </div>
+        <div class="right_column">
+            <h3 class="article_headline">{{article.title}}</h3>
+            <p>{{article.lead_paragraph}}</p>     
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>

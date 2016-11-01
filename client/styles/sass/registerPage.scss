@@ -1,0 +1,29 @@
+.register_page {
+    .container {
+        height: 400px;
+        width: 100%;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        margin-top: -200px;
+        background-color: black;
+        text-align: center;
+        padding: 30px;
+    }
+
+    input {
+        display: block;
+        margin: 5px auto;
+    }
+
+    .error_note {
+        height: 30px;
+        width: 300px;
+        background-color: tomato;
+        color: darkred;
+        border: 1px darkred solid;
+        border-radius: 3px;
+        margin: 10px auto;
+        line-height: 30px;
+    }
+}

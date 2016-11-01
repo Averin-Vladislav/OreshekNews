@@ -1,0 +1,46 @@
+<div class="main_page" ng-controller="OreshekNewsController as newsCtrl">
+    <div class="wrapper">
+        <div class="user_info" ng-hide="hide.userInfo">
+            <div class="username">{{username}}</div>
+            <div class="bookmark_button" ng-click="showBookmarks()">
+                <img src="./resources/min/bookmark.png" alt="favorite_icon">
+            </div>
+            <div class="logout_button" ng-click="logOut()">Log out</div>
+            <div class="avatar_container">
+                <img src="{{avatarUrl}}" alt="profile_image" class="avatar">
+                <div class="upload_button" ng-click="uploadAvatar()">
+                    <span>UPLOAD</span>
+                </div>
+            </div>    
+            <div class="upload_form">
+                <input type="text" placeholder=" type image url" ng-model="avatarUrl">
+            </div>    
+        </div>
+        <div class="content">
+            <player ng-controller="PlayerController"></player>
+            <div class="header">
+                    <div class="logo">
+                        <h1 class="heading_ref" ng-click="hideAll()">Oreshek News</h1>
+                    </div>
+                    <p>Handy news-service to keep track last trends and events of a world</p>
+            </div>
+            <div class="main_section">
+                <div class="page_body container">
+                    <select-form></select-form>
+                    <section-list></section-list>
+                    <news></news>
+                    <bookmarks></bookmarks>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="copyright">
+                <p class="name">by Averin Vladislav&copy;</p>
+                <a href="https://www.facebook.com/vladik.averin" target="_blank">Contact me</a>
+                <div class="switch_page_ref admin_page_ref" ng-click="switchPage('admin')">Admin</div>
+                <div class="switch_page_ref" ng-click="switchPage('login')" ng-hide="!hide.userInfo">Login</div>
+            </div>
+        </div>
+    </div>
+    <spinner></spinner>
+</div>
