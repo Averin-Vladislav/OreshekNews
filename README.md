@@ -18,7 +18,10 @@
  3. Extract downloaded files to 'app' folder in your `[project-name]` folder (for MSVS users)  
  4. [Install node.js](https://nodejs.org/en/) globally  
  5. In `[app]` folder run command-prompt and install 'node-modules' use `$ npm install` command
- 6. Run server (`Ctrl + F5` in MSVS or `$ gulp start` command in `[app]` folder - see **Using Gulp** section below)
+ 6. [Install mongoDB](https://docs.mongodb.com/) and follow [this instructions](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/)
+ 7. For convenient collaboration with your DataBase you can use [RoboMongo](https://robomongo.org/)
+ 8. Open `[server]` folder and run `$ node server` command there
+ 9. Run server for gulp compile (`Ctrl + F5` in MSVS or `$ gulp start` command in `[app]` folder - see **Using Gulp** section below)
 
 ##Using Gulp
 For using [Gulp](http://gulpjs.com/) you ought to install these packages:  
