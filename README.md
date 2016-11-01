@@ -7,10 +7,11 @@
  [![NPM version](https://img.shields.io/npm/v/npm.svg?maxAge=2592000)](https://www.npmjs.com/)  [![](https://img.shields.io/badge/build%20with-Gulp-yellow.svg)](http://gulpjs.com/)
  [![](https://img.shields.io/badge/Angular-v1.5.8-red.svg)](https://angularjs.org/) [![](https://img.shields.io/badge/contacts-Facebook-blue.svg)](https://www.facebook.com/vladik.averin) [![](https://img.shields.io/badge/API-NY%20Times-lightgrey.svg)](https://developer.nytimes.com/)
  
-##Fast start with app (implied that you have configured mongoDB):
+##Fast start with app:
  1. [Download repository](https://github.com/Averin-Vladislav/OreshekNews/archive/master.zip) to your local machine  
  2. Open `[installation]` folder  
  3. Run `deploy.bat` file  
+>implied that you have configured mongoDB - it's necessary for using additional functionality
 
 ##To deploy project and run application you must do following steps:  
  1. [Download repository](https://github.com/Averin-Vladislav/OreshekNews/archive/master.zip) to your local machine    
