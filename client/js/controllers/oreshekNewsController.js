@@ -91,7 +91,7 @@ app.controller('OreshekNewsController', ['$scope',
                     current.author = (current.byline && current.byline.original) ? `${current.byline.original}` : ``;
 
                     if(loginService.isLogin === true) {
-                        var data = {
+                        let data = {
                             username: $scope.username,
                             title: current.headline.main
                         }
@@ -120,7 +120,7 @@ app.controller('OreshekNewsController', ['$scope',
     };
 
     $scope.checkIfExists = (article) => {
-        var data = {
+        let data = {
             username: $scope.username,
             title: article.headline.main
         }
@@ -153,7 +153,7 @@ app.controller('OreshekNewsController', ['$scope',
         $scope.hide.bookmarks = false;
         $(".logo").addClass("logo_top");
 
-        var url = 'http://localhost:3000/getBookmarks' + '/' + $scope.username;
+        let url = 'http://localhost:3000/getBookmarks' + '/' + $scope.username;
 
         $http({
             url: url,
@@ -225,7 +225,7 @@ app.controller('OreshekNewsController', ['$scope',
     };
 
     $scope.addToBookmarks = (article) => {
-        var data = {
+        let data = {
             username: $scope.username,
             web_url: article.web_url,
             gallery: article.gallery,
@@ -255,7 +255,7 @@ app.controller('OreshekNewsController', ['$scope',
     }; 
 
     $scope.deleteFromBookmarks = (article) => {
-        var data = {
+        let data = {
             username: $scope.username,
             title: article.title
         }
@@ -270,8 +270,8 @@ app.controller('OreshekNewsController', ['$scope',
         function(response) { 
         });
 
-        var index = 0;
-        for(var i = 0; i < $scope.articles.length; i++) {
+        let index = 0;
+        for(let i = 0; i < $scope.articles.length; i++) {
             if($scope.articles[i].title === article.title) {
                 index = i;
                 break;
