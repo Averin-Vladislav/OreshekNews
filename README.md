@@ -11,7 +11,7 @@
  1. [Download repository](https://github.com/Averin-Vladislav/OreshekNews/archive/master.zip) to your local machine  
  2. Open `[installation]` folder  
  3. Run `deploy.bat` file  
->implied that you have configured mongoDB - it's necessary for using additional functionality
+> Implied that you have configured mongoDB - it's necessary for using additional functionality
 
 ##To deploy project and run application you must do following steps:  
  1. [Download repository](https://github.com/Averin-Vladislav/OreshekNews/archive/master.zip) to your local machine    
