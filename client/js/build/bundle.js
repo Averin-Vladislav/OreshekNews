@@ -55,20 +55,24 @@ app.controller('MainController', ['$scope', '$rootScope', '$location', function 
         }
     };
 }]);
-app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$location', 'requestService', 'constService', 'isIEService', 'loginService', function ($scope, $http, $timeout, $location, requestService, constService, isIEService, loginService) {
+app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$location', '$route', 'requestService', 'constService', 'isIEService', 'loginService', function ($scope, $http, $timeout, $location, $route, requestService, constService, isIEService, loginService) {
     $scope.hide = {
         currentSection: true,
         sectionsList: true,
         bookmarks: true,
         spinnerGIF: true,
         spinnerCSS: true,
-        userInfo: true
+        userInfo: true,
+        noBookmarksMsg: false,
+        bookmarksHeading: true
     };
 
     if (loginService.isLogin === true) {
         $scope.hide.userInfo = false;
+        $(".admin_page_ref").addClass("right_ref");
     } else {
         $scope.hide.userInfo = true;
+        $(".admin_page_ref").removeClass("right_ref");
     }
 
     $scope.username = loginService.username;
@@ -134,24 +138,24 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$locati
                     current.date = '' + current.pub_date.slice(0, 10);
                     current.author = current.byline && current.byline.original ? '' + current.byline.original : '';
 
-                    var data = {
-                        username: $scope.username,
-                        title: current.headline.main
-                    };
+                    if (loginService.isLogin === true) {
+                        var data = {
+                            username: $scope.username,
+                            title: current.headline.main
+                        };
 
-                    $http({
-                        url: 'http://localhost:3000/checkIfExists',
-                        method: "POST",
-                        data: { article: data }
-                    }).then(function (response) {
-                        if (response.data === "Data is already exists") {
-                            console.log("exists");
-                            current.bookmark = "./resources/min/bookmark_marked.png";
-                        } else {
-                            console.log("not exists");
-                            current.bookmark = "./resources/min/bookmark.png";
-                        }
-                    }, function (response) {});
+                        $http({
+                            url: 'http://localhost:3000/checkIfExists',
+                            method: "POST",
+                            data: { article: data }
+                        }).then(function (response) {
+                            if (response.data === "Data is already exists") {
+                                current.bookmark = "./resources/min/bookmark_marked.png";
+                            } else {
+                                current.bookmark = "./resources/min/bookmark.png";
+                            }
+                        }, function (response) {});
+                    }
                 });
                 $scope.hideSpinner(true);
                 $(".logo").addClass("logo_top");
@@ -196,6 +200,13 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$locati
             method: "GET"
         }).then(function (response) {
             $scope.articles = response.data.bookmarks;
+            if ($scope.articles.length === 0) {
+                $scope.hide.noBookmarksMsg = false;
+                $scope.hide.bookmarksHeading = true;
+            } else {
+                $scope.hide.noBookmarksMsg = true;
+                $scope.hide.bookmarksHeading = false;
+            }
             $scope.articles.forEach(function (current, index) {
                 if (current.gallery) {
                     current.hideImage = false;
@@ -208,6 +219,8 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$locati
 
     $scope.logOut = function () {
         $scope.hideAll();
+        $(".admin_page_ref").removeClass("right_ref");
+
         $http({
             url: 'http://localhost:3000/logout',
             method: "GET"
@@ -258,6 +271,11 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$locati
         }).then(function (response) {
             if (response.status === "203") {}
         }, function (response) {});
+
+        $(".more_info").addClass("bookmark_response");
+        setTimeout(function () {
+            $(".more_info").removeClass("bookmark_response");
+        }, 400);
     };
 
     $scope.deleteFromBookmarks = function (article) {
@@ -271,6 +289,23 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$locati
             method: "POST",
             data: { article: data }
         }).then(function (response) {}, function (response) {});
+
+        var index = 0;
+        for (var i = 0; i < $scope.articles.length; i++) {
+            if ($scope.articles[i].title === article.title) {
+                index = i;
+                break;
+            }
+        }
+        $scope.articles.splice(index, 1);
+
+        if ($scope.articles.length === 0) {
+            $scope.hide.noBookmarksMsg = false;
+            $scope.hide.bookmarksHeading = true;
+        } else {
+            $scope.hide.noBookmarksMsg = true;
+            $scope.hide.bookmarksHeading = false;
+        }
     };
 }]);
 app.controller('PlayerController', ['$scope', '$rootScope', 'isIEService', function ($scope, $rootScope, isIEService) {
@@ -383,16 +418,16 @@ app.directive('sectionList', function () {
         templateUrl: '../../directives/sectionList/sectionList.html'
     };
 });
-app.directive('selectForm', function () {
-    return {
-        restrict: 'E',
-        templateUrl: '../../directives/selectForm/selectForm.html'
-    };
-});
 app.directive('spinner', function () {
     return {
         restrict: 'E',
         templateUrl: '../../directives/spinner/spinner.html'
+    };
+});
+app.directive('selectForm', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '../../directives/selectForm/selectForm.html'
     };
 });
 app.config(function ($routeProvider) {

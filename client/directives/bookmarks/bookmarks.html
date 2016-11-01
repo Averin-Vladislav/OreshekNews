@@ -1,6 +1,9 @@
 <div class="row" ng-hide="hide.bookmarks">
-    <div class="sub_heading_container">
+    <div class="sub_heading_container" ng-hide="hide.bookmarksHeading">
         <h2 class="sub_heading">Bookmarks</h2>
+    </div>
+    <div class="no_bookmarks_msg" ng-hide="hide.noBookmarksMsg">
+        <h2 class="sub_heading">No added bookmarks yet</h2>
     </div>
     <div class="col-sm-6" ng-repeat="article in articles">
         <div class="more_info">

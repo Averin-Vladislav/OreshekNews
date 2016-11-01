@@ -186,10 +186,17 @@ header {
     }
 }
 
-.sub_heading_container {
+.sub_heading_container, .no_bookmarks_msg {
     text-align: center;
     .sub_heading {
         font: 40px "AmericanTextCRegular";
+    }
+}
+
+.no_bookmarks_msg {
+    margin-top: 20%;
+    .sub_heading {
+        font: 50px "AmericanTextCRegular";
     }
 }
 
@@ -303,6 +310,10 @@ header {
     }
 }
 
+.bookmark_response {
+    background-color: rgba(#a3f7b9, 0.7);
+}
+
 .user_info {
     .bookmark_button {
         top: 30px;
@@ -371,6 +382,9 @@ header {
             text-decoration: none; 
             cursor: pointer;
         }
+    }
+    .right_ref {
+        margin-right: 0;
     }
     .name {
         margin: 5px 0 0 0;

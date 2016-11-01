@@ -2,25 +2,30 @@ app.controller('OreshekNewsController', ['$scope',
                                          '$http', 
                                          '$timeout',
                                          '$location', 
+                                         '$route',
                                          'requestService', 
                                          'constService', 
                                          'isIEService',
                                          'loginService',
-                                         ($scope, $http, $timeout, $location, requestService, constService, isIEService, loginService) => {
+                                         ($scope, $http, $timeout, $location, $route, requestService, constService, isIEService, loginService) => {
     $scope.hide = {
         currentSection: true,
         sectionsList: true,
         bookmarks: true,
         spinnerGIF: true,
         spinnerCSS: true,
-        userInfo: true
+        userInfo: true,
+        noBookmarksMsg: false,
+        bookmarksHeading: true
     };
 
     if(loginService.isLogin === true) {
         $scope.hide.userInfo = false;
+        $(".admin_page_ref").addClass("right_ref");
     }
     else {
         $scope.hide.userInfo = true;
+        $(".admin_page_ref").removeClass("right_ref");
     }
 
     $scope.username = loginService.username;
@@ -85,35 +90,28 @@ app.controller('OreshekNewsController', ['$scope',
                     current.date = `${current.pub_date.slice(0, 10)}`;
                     current.author = (current.byline && current.byline.original) ? `${current.byline.original}` : ``;
 
+                    if(loginService.isLogin === true) {
+                        var data = {
+                            username: $scope.username,
+                            title: current.headline.main
+                        }
 
-
-                    var data = {
-                        username: $scope.username,
-                        title: current.headline.main
+                        $http({
+                            url: 'http://localhost:3000/checkIfExists',
+                            method: "POST",
+                            data: { article : data}
+                        })
+                        .then(function(response) {
+                            if(response.data === "Data is already exists") {    
+                                current.bookmark = "./resources/min/bookmark_marked.png";
+                            }
+                            else {
+                                current.bookmark = "./resources/min/bookmark.png";
+                            }
+                        }, 
+                        function(response) { 
+                        });
                     }
-
-                    $http({
-                        url: 'http://localhost:3000/checkIfExists',
-                        method: "POST",
-                        data: { article : data}
-                    })
-                    .then(function(response) {
-                        if(response.data === "Data is already exists") {               
-                            console.log("exists");
-                            current.bookmark = "./resources/min/bookmark_marked.png";
-                        }
-                        else {
-                            console.log("not exists");
-                            current.bookmark = "./resources/min/bookmark.png";
-                        }
-                    }, 
-                    function(response) { 
-                    });
-
-
-
-                    
-
                 });
                 $scope.hideSpinner(true);
                 $(".logo").addClass("logo_top");
@@ -163,6 +161,14 @@ app.controller('OreshekNewsController', ['$scope',
         })
         .then(function(response) {
             $scope.articles = response.data.bookmarks;
+            if($scope.articles.length === 0) {
+                $scope.hide.noBookmarksMsg = false;
+                $scope.hide.bookmarksHeading = true;
+            }
+            else {
+                $scope.hide.noBookmarksMsg = true;
+                $scope.hide.bookmarksHeading = false;
+            }
             $scope.articles.forEach(function (current, index) {
                 if (current.gallery) {                      
                     current.hideImage = false;
@@ -178,6 +184,8 @@ app.controller('OreshekNewsController', ['$scope',
 
     $scope.logOut = () => {
         $scope.hideAll();
+        $(".admin_page_ref").removeClass("right_ref");
+
         $http({
             url: 'http://localhost:3000/logout',
             method: "GET"
@@ -239,6 +247,11 @@ app.controller('OreshekNewsController', ['$scope',
         }, 
         function(response) { 
         });
+
+        $(".more_info").addClass("bookmark_response");
+        setTimeout(function() {
+            $(".more_info").removeClass("bookmark_response");
+        }, 400)
     }; 
 
     $scope.deleteFromBookmarks = (article) => {
@@ -256,5 +269,23 @@ app.controller('OreshekNewsController', ['$scope',
         }, 
         function(response) { 
         });
+
+        var index = 0;
+        for(var i = 0; i < $scope.articles.length; i++) {
+            if($scope.articles[i].title === article.title) {
+                index = i;
+                break;
+            }
+        }
+        $scope.articles.splice(index, 1);
+
+        if($scope.articles.length === 0) {
+            $scope.hide.noBookmarksMsg = false;
+            $scope.hide.bookmarksHeading = true;
+        }
+        else {
+            $scope.hide.noBookmarksMsg = true;
+            $scope.hide.bookmarksHeading = false;
+        }
     }
 }]);
