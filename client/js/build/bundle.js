@@ -69,6 +69,9 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$locati
 
     if (loginService.isLogin === true) {
         $scope.hide.userInfo = false;
+        setTimeout(function () {
+            $(".user_info").addClass("user_info_slided");
+        }, 400);
         $(".admin_page_ref").addClass("right_ref");
     } else {
         $scope.hide.userInfo = true;
@@ -88,15 +91,13 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$locati
         }
     };
 
-    $scope.hideSpinner(false);
-
-    $scope.waitPageLoading = function () {
-        $timeout(function () {
+    /*$scope.hideSpinner(false);
+      $scope.waitPageLoading = () => {
+        $timeout(function() {
             $scope.hideSpinner(true);
         }, 5000);
-    };
-
-    $scope.waitPageLoading();
+    }
+      $scope.waitPageLoading();*/
 
     var jsonPromise = requestService.makeRequest(constService.dataPath);
     jsonPromise.then(function (response) {
@@ -215,22 +216,27 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$locati
                 }
             });
         }, function (response) {});
+
+        $scope.toTop();
     };
 
     $scope.logOut = function () {
+        $(".user_info").removeClass("user_info_slided");
         $scope.hideAll();
         $(".admin_page_ref").removeClass("right_ref");
 
-        $http({
-            url: 'http://localhost:3000/logout',
-            method: "GET"
-        }).then(function (response) {
-            loginService.isLogin = false;
-            $location.path('');
-            $scope.hide.userInfo = true;
-        }, function (response) {
-            console.log('user was not loged out');
-        });
+        setTimeout(function () {
+            $http({
+                url: 'http://localhost:3000/logout',
+                method: "GET"
+            }).then(function (response) {
+                loginService.isLogin = false;
+                $location.path('');
+                $scope.hide.userInfo = true;
+            }, function (response) {
+                console.log('user was not loged out');
+            });
+        }, 400);
     };
 
     $scope.uploadAvatar = function () {
@@ -272,9 +278,9 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$locati
             if (response.status === "203") {}
         }, function (response) {});
 
-        $(".more_info").addClass("bookmark_response");
+        $(".more_info").addClass("bookmark_add_response");
         setTimeout(function () {
-            $(".more_info").removeClass("bookmark_response");
+            $(".more_info").removeClass("bookmark_add_response");
         }, 400);
     };
 
@@ -297,15 +303,19 @@ app.controller('OreshekNewsController', ['$scope', '$http', '$timeout', '$locati
                 break;
             }
         }
-        $scope.articles.splice(index, 1);
 
-        if ($scope.articles.length === 0) {
-            $scope.hide.noBookmarksMsg = false;
-            $scope.hide.bookmarksHeading = true;
-        } else {
-            $scope.hide.noBookmarksMsg = true;
-            $scope.hide.bookmarksHeading = false;
-        }
+        $(".more_info").addClass("bookmark_delete_response");
+        $timeout(function () {
+            $(".more_info").removeClass("bookmark_delete_response");
+            $scope.articles.splice(index, 1);
+            if ($scope.articles.length === 0) {
+                $scope.hide.noBookmarksMsg = false;
+                $scope.hide.bookmarksHeading = true;
+            } else {
+                $scope.hide.noBookmarksMsg = true;
+                $scope.hide.bookmarksHeading = false;
+            }
+        }, 400);
     };
 }]);
 app.controller('PlayerController', ['$scope', '$rootScope', 'isIEService', function ($scope, $rootScope, isIEService) {
@@ -400,6 +410,12 @@ app.directive('bookmarks', function () {
         templateUrl: '../../directives/bookmarks/bookmarks.html'
     };
 });
+app.directive('player', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '../../directives/player/player.html'
+    };
+});
 app.directive('news', function () {
     return {
         restrict: 'E',
@@ -412,22 +428,16 @@ app.directive('sectionList', function () {
         templateUrl: '../../directives/sectionList/sectionList.html'
     };
 });
-app.directive('player', function () {
+app.directive('spinner', function () {
     return {
         restrict: 'E',
-        templateUrl: '../../directives/player/player.html'
+        templateUrl: '../../directives/spinner/spinner.html'
     };
 });
 app.directive('selectForm', function () {
     return {
         restrict: 'E',
         templateUrl: '../../directives/selectForm/selectForm.html'
-    };
-});
-app.directive('spinner', function () {
-    return {
-        restrict: 'E',
-        templateUrl: '../../directives/spinner/spinner.html'
     };
 });
 app.config(function ($routeProvider) {

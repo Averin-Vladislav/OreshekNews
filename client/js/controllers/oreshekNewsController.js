@@ -21,6 +21,9 @@ app.controller('OreshekNewsController', ['$scope',
 
     if(loginService.isLogin === true) {
         $scope.hide.userInfo = false;
+        setTimeout(function() {
+           $(".user_info").addClass("user_info_slided");
+        }, 400);
         $(".admin_page_ref").addClass("right_ref");
     }
     else {
@@ -40,7 +43,7 @@ app.controller('OreshekNewsController', ['$scope',
         }
     }
 
-    $scope.hideSpinner(false);
+    /*$scope.hideSpinner(false);
 
     $scope.waitPageLoading = () => {
         $timeout(function() {
@@ -48,7 +51,7 @@ app.controller('OreshekNewsController', ['$scope',
         }, 5000);
     }
 
-    $scope.waitPageLoading();
+    $scope.waitPageLoading();*/
 
     let jsonPromise = requestService.makeRequest(constService.dataPath);
     jsonPromise.then(function (response) {
@@ -180,24 +183,29 @@ app.controller('OreshekNewsController', ['$scope',
         }, 
         function(response) { 
         });
+
+        $scope.toTop();
     }
 
     $scope.logOut = () => {
+        $(".user_info").removeClass("user_info_slided");
         $scope.hideAll();
         $(".admin_page_ref").removeClass("right_ref");
 
-        $http({
-            url: 'http://localhost:3000/logout',
-            method: "GET"
-        })
-        .then(function(response) {
-            loginService.isLogin = false;
-            $location.path('');
-            $scope.hide.userInfo = true;
-        }, 
-        function(response) { 
-            console.log('user was not loged out');
-        });
+        setTimeout(function() {
+            $http({
+                url: 'http://localhost:3000/logout',
+                method: "GET"
+            })
+            .then(function(response) {
+                loginService.isLogin = false;
+                $location.path('');
+                $scope.hide.userInfo = true;
+            }, 
+            function(response) { 
+                console.log('user was not loged out');
+            });
+        }, 400);
     }
 
     $scope.uploadAvatar = () => {
@@ -248,10 +256,10 @@ app.controller('OreshekNewsController', ['$scope',
         function(response) { 
         });
 
-        $(".more_info").addClass("bookmark_response");
+        $(".more_info").addClass("bookmark_add_response");
         setTimeout(function() {
-            $(".more_info").removeClass("bookmark_response");
-        }, 400)
+            $(".more_info").removeClass("bookmark_add_response");
+        }, 400);
     }; 
 
     $scope.deleteFromBookmarks = (article) => {
@@ -277,15 +285,19 @@ app.controller('OreshekNewsController', ['$scope',
                 break;
             }
         }
-        $scope.articles.splice(index, 1);
 
-        if($scope.articles.length === 0) {
-            $scope.hide.noBookmarksMsg = false;
-            $scope.hide.bookmarksHeading = true;
-        }
-        else {
-            $scope.hide.noBookmarksMsg = true;
-            $scope.hide.bookmarksHeading = false;
-        }
+        $(".more_info").addClass("bookmark_delete_response");
+        $timeout(function() {
+            $(".more_info").removeClass("bookmark_delete_response");
+            $scope.articles.splice(index, 1);
+            if($scope.articles.length === 0) {
+                $scope.hide.noBookmarksMsg = false;
+                $scope.hide.bookmarksHeading = true;
+            }
+            else {
+                $scope.hide.noBookmarksMsg = true;
+                $scope.hide.bookmarksHeading = false;
+            }
+        }, 400);
     }
 }]);

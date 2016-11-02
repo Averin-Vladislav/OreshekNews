@@ -11,6 +11,8 @@
     <!--Application scripts-->
     <script src="js/build/bundle.js"></script>
 </head>
-<body ng-view ng-controller="MainController as mainCtrl"> 
+<body> 
+    <player ng-controller="PlayerController"></player>
+    <div  ng-view ng-controller="MainController as mainCtrl"></div>
 </body>
 </html>
