@@ -10,6 +10,10 @@ html, body {
     display: block;
 }
 
+body > div {
+    height: 100%;
+}
+
 header {
     position: fixed;
     width: 100%;
@@ -37,7 +41,7 @@ header {
 .user_info {
     position: fixed;
     top: 80%;
-    left: -145px;
+    left: -250px;
     width: 250px;
     height: 100px;
     background-color: rgba(#000, 0.5);
@@ -138,6 +142,10 @@ header {
             display: block;
         }
     }
+}
+
+.user_info_slided {
+    left: -145px;
 }
 
 .wrapper {
@@ -266,8 +274,7 @@ header {
     background-color: rgba(#000, 0.7);
     opacity: 0;
     transform: rotateY(90deg);
-    -webkit-transition: all .5s;
-    transition: all .5s;
+    transition: background-color .5s, left 1s;
     z-index: 30;
     .more_link {
         position: relative;
@@ -310,8 +317,12 @@ header {
     }
 }
 
-.bookmark_response {
+.bookmark_add_response {
     background-color: rgba(#a3f7b9, 0.7);
+}
+
+.bookmark_delete_response {
+    background-color: rgba(#ff7a85, 0.7);
 }
 
 .user_info {

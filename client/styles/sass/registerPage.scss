@@ -1,14 +1,13 @@
 .register_page {
     .container {
-        height: 400px;
+        height: 500px;
         width: 100%;
         position: absolute;
         top: 50%;
+        background-color: rgba(#000, 0.5);
         left: 0;
-        margin-top: -200px;
-        background-color: black;
+        margin-top: -250px;
         text-align: center;
-        padding: 30px;
     }
 
     input {
@@ -16,12 +15,58 @@
         margin: 5px auto;
     }
 
+    .register_title {
+        margin-top: 45px;
+        font-family: "AmericanTextCRegular",Helvetica,Arial,sans-serif;
+        font-size: 30px;
+        color: white;
+    }
+
+    form {
+        fieldset {
+            input {
+                display: block;
+                margin: 8px auto;
+                width: 300px;
+                height: 50px;
+                border: 1px white solid;
+                border-radius: 5px;
+                background-color: black;
+                padding: 5px;
+                font-size: 24px;
+                color: #2DE0E0;
+            }
+        }
+        .register_btn, .back_btn {
+            display: inline-block;
+            padding-top: 7px;
+            font: normal 16px "Helvetica Neue", Helvetica, Arial, sans-serif;
+            width: 120px;
+            background-color: black;
+            color: white;
+            border: 1px white solid;
+            &:hover {
+                background-color: #444;
+            }
+        }
+        .back_btn {
+            font-size: 15px;
+            &:hover {
+                background-color: #af5f0e;
+            }
+        }
+        .separator {
+            color: white;
+            margin: 0 5px 0 5px;
+        }
+    }
+
     .error_note {
+        font: normal 16px "Helvetica Neue", Helvetica, Arial, sans-serif;
         height: 30px;
-        width: 300px;
+        width: 280px;
         background-color: tomato;
         color: darkred;
-        border: 1px darkred solid;
         border-radius: 3px;
         margin: 10px auto;
         line-height: 30px;
