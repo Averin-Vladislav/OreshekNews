@@ -422,6 +422,12 @@ app.directive('news', function () {
         templateUrl: '../../directives/news/news.html'
     };
 });
+app.directive('selectForm', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '../../directives/selectForm/selectForm.html'
+    };
+});
 app.directive('sectionList', function () {
     return {
         restrict: 'E',
@@ -432,12 +438,6 @@ app.directive('spinner', function () {
     return {
         restrict: 'E',
         templateUrl: '../../directives/spinner/spinner.html'
-    };
-});
-app.directive('selectForm', function () {
-    return {
-        restrict: 'E',
-        templateUrl: '../../directives/selectForm/selectForm.html'
     };
 });
 app.config(function ($routeProvider) {

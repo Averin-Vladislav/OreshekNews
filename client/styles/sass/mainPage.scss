@@ -274,7 +274,7 @@ header {
     background-color: rgba(#000, 0.7);
     opacity: 0;
     transform: rotateY(90deg);
-    transition: background-color .5s, left 1s;
+    transition: background-color .5s, left 1s, transform 0.5s;
     z-index: 30;
     .more_link {
         position: relative;
