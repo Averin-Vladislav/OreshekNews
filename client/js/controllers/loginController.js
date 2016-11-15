@@ -9,7 +9,7 @@ app.controller('LoginController', ['$scope',
 
     $scope.showErrorNote = false;
 
-    $scope.makeRequest = () => {
+    $scope.localLogin = () => {
         username =  $scope.username;
         password =  $scope.password;
 
@@ -26,11 +26,38 @@ app.controller('LoginController', ['$scope',
                 loginService.isLogin = true;
                 loginService.username = username;
                 loginService.avatarUrl = response.data.avatarUrl;
+                console.log(response.data.avatarUrl);
             }
         }, 
         function(response) { 
             loginService.isLogin = false;
             $scope.showErrorNote = true;
         });
-    }  
+    }
+
+    $scope.facebookLogin = () => {
+        $http({
+            url: 'http://localhost:3000/auth/facebook',
+            method: "GET"
+        })
+        .then(function(response) {
+            console.log(response.data.username);
+        }, 
+        function(response) { 
+            console.log('fail facebook login');
+        });
+    } 
+
+    $scope.googleLogin = () => {
+        $http({
+            url: 'http://localhost:3000/auth/google',
+            method: "GET"
+        })
+        .then(function(response) {
+            console.log("success google login");
+        },
+        function(response) {
+            console.log("failure google login");
+        });
+    }
 }]);

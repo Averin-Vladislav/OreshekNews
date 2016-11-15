@@ -13,7 +13,7 @@ module.exports = function(app) {
         var password2 = req.body.password2;
 
         req.checkBody('name', 'Name is required').notEmpty();
-        req.checkBody('email', 'Emial is required').notEmpty();
+        req.checkBody('email', 'Email is required').notEmpty();
         req.checkBody('email', 'Email is not valid').isEmail();
         req.checkBody('username', 'Username is required').notEmpty();
         req.checkBody('password', 'Password is required').notEmpty();
@@ -27,12 +27,15 @@ module.exports = function(app) {
         } 
         else {
             var newUser = new User({
-                name: name,
-                email: email, 
-                username: username,
-                password: password,
                 avatarurl: "../resources/min/profile.png"
             });
+            newUser.local = {
+                name: name,
+                email: email,
+                username: username,
+                password: password
+            };
+
             User.createUser(newUser, function(err, user) {
                 if(err) {
                     throw err;
@@ -44,9 +47,8 @@ module.exports = function(app) {
     });
 
     app.post('/login', passport.authenticate('local'), function(req, res) {
-        console.log('authentication was complete successfuly');
         var avatarUrl = "";
-        USERNAME = req.user.username;
+        USERNAME = req.user.local.username;
         User.getUserByUsername(USERNAME, function(err, docs) {
             if(err) {
                 throw err;
@@ -55,15 +57,26 @@ module.exports = function(app) {
             ID = docs._id;
             res.status(202);
             res.send({message: 'Authorized', avatarUrl: avatarUrl});
-        })
+        });
     });
 
+    app.get('/auth/facebook', passport.authenticate('facebook', {scope: ['email']}));
+    app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+        successRedirect: '/home',
+        failureRedirect: '/login'
+    }));
+
+    app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+    app.get('/auth/google/callback', passport.authenticate('google', {
+            successRedirect : '/home',
+            failureRedirect : '/login'
+        }));
+
     app.get('/logout', function(req, res) {
-        console.log('user was loged out');
         req.logout();
         res.status(200);
-        res.send('Loged out');
-    }); 
+        res.send('Logged out');
+    });
 
     app.post('/uploadAvatar', function(req, res) {
         User.update({_id: ID}, {
@@ -75,7 +88,32 @@ module.exports = function(app) {
         });
         res.status(200);
         res.send('Avatar was uploaded');
-    }); 
+    });
+
+    app.get('/home', isLoggedIn, function(req, res) {
+        USERNAME = req.user.local.username;
+        User.getUserByUsername(USERNAME, function(err, docs) {
+            var username = docs.facebook.username;
+            res.redirect('http://localhost:8000/');
+            res.send({message: 'Authorized', username: username});
+        });
+    });
+
+    /*app.get('/getFacebookInfo', function(req, res) {
+        console.log(req.user);
+        USERNAME = req.user;
+        User.getUserByUsername(USERNAME, function(err, docs) {
+            var username = docs.facebook.username;
+            res.send({message: 'Authorized', username: username});
+        });
+    });*/
+
+    function isLoggedIn(req, res, next) {
+        if (req.isAuthenticated())
+            return next();
+
+        res.redirect('http://localhost:8000/');
+    }
 
     return app;
 };

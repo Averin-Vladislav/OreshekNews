@@ -7,9 +7,13 @@
                 <input type="text" class="username" name="username" placeholder="Username" ng-model="username">
                 <input type="password" class="password" name="password" placeholder="Password" ng-model="password">
             </fieldset>
-            <input type="submit" class="btn btn-primary login_btn" value="Submit" ng-click="makeRequest()"/>
+            <input type="submit" class="btn btn-primary login_btn" value="Submit" ng-click="localLogin()"/>
             <span class="separator">or</span>
             <div class="btn btn-primary register_btn" ng-click="switchPage('register')">Register</div>
+            <!--<a href="http://localhost:3000/auth/facebook" class="btn btn-primary" ng-click="facebookLogin()"><span class="fa fa-facebook"></span> Facebook</a>-->
+            <!--<a href="http://localhost:3000/auth/google" class="btn btn-danger"><span class="fa fa-google-plus"></span> Google</a>-->
+            <div class="btn btn-danger" ng-click="googleLogin()"><span class="fa fa-google-plus"></span> Google</div>
+            <div class="btn btn-primary" ng-click="facebookLogin()"><span class="fa fa-facebook"></span> Facebook</div>
         </form>
     </div>
     <div class="a_footer">

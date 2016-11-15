@@ -11,7 +11,7 @@ app.controller('LoginController', ['$scope', '$http', '$location', 'loginService
 
     $scope.showErrorNote = false;
 
-    $scope.makeRequest = function () {
+    $scope.localLogin = function () {
         username = $scope.username;
         password = $scope.password;
 
@@ -27,10 +27,33 @@ app.controller('LoginController', ['$scope', '$http', '$location', 'loginService
                 loginService.isLogin = true;
                 loginService.username = username;
                 loginService.avatarUrl = response.data.avatarUrl;
+                console.log(response.data.avatarUrl);
             }
         }, function (response) {
             loginService.isLogin = false;
             $scope.showErrorNote = true;
+        });
+    };
+
+    $scope.facebookLogin = function () {
+        $http({
+            url: 'http://localhost:3000/auth/facebook',
+            method: "GET"
+        }).then(function (response) {
+            console.log(response.data.username);
+        }, function (response) {
+            console.log('fail facebook login');
+        });
+    };
+
+    $scope.googleLogin = function () {
+        $http({
+            url: 'http://localhost:3000/auth/google',
+            method: "GET"
+        }).then(function (response) {
+            console.log("success google login");
+        }, function (response) {
+            console.log("failure google login");
         });
     };
 }]);
@@ -410,28 +433,28 @@ app.directive('bookmarks', function () {
         templateUrl: '../../directives/bookmarks/bookmarks.html'
     };
 });
-app.directive('player', function () {
-    return {
-        restrict: 'E',
-        templateUrl: '../../directives/player/player.html'
-    };
-});
 app.directive('news', function () {
     return {
         restrict: 'E',
         templateUrl: '../../directives/news/news.html'
     };
 });
-app.directive('selectForm', function () {
+app.directive('player', function () {
     return {
         restrict: 'E',
-        templateUrl: '../../directives/selectForm/selectForm.html'
+        templateUrl: '../../directives/player/player.html'
     };
 });
 app.directive('sectionList', function () {
     return {
         restrict: 'E',
         templateUrl: '../../directives/sectionList/sectionList.html'
+    };
+});
+app.directive('selectForm', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '../../directives/selectForm/selectForm.html'
     };
 });
 app.directive('spinner', function () {

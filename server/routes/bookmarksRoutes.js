@@ -69,7 +69,7 @@ module.exports = function(app) {
     });
 
     app.get('/getBookmarks/:username', function(req, res) {
-        username = req.params.username;
+        var username = req.params.username;
         User.getUserByUsername(username, function(err, user) {
             if(err) {
                 throw err;
